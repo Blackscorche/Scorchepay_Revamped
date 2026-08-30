@@ -1,0 +1,25 @@
+name: scorchepay
+description: "ScorchePay — Money OS. Unified wallet, Smart Pay and invisible crypto in one app."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  http: ^1.2.0
+  flutter_riverpod: ^2.5.1
+  shared_preferences: ^2.2.3
+  uuid: ^4.4.0
+  image_picker: ^1.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
