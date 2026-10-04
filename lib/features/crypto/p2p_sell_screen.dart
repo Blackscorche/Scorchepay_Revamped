@@ -105,7 +105,7 @@ class _P2PSellScreenState extends State<P2PSellScreen> {
               subtitle: 'Sell directly to other ScorchePay users at their rate',
             ),
             const SizedBox(height: 22),
-            const Text('Asset', style: AppText.sectionTitle),
+            Text('Asset', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             GestureDetector(
               onTap: () async {
@@ -115,7 +115,7 @@ class _P2PSellScreenState extends State<P2PSellScreen> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Choose an asset', style: AppText.detailTitle),
+                      Text('Choose an asset', style: AppText.detailTitle),
                       const SizedBox(height: 10),
                       for (int i = 0; i < _assets.length; i++)
                         GestureDetector(
@@ -134,7 +134,7 @@ class _P2PSellScreenState extends State<P2PSellScreen> {
                                 Text(_assets[i].name, style: AppText.body),
                                 const SizedBox(width: 6),
                                 Text(_assets[i].symbol,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.muted,
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w500)),
@@ -174,7 +174,7 @@ class _P2PSellScreenState extends State<P2PSellScreen> {
                         ],
                       ),
                     ),
-                    const Icon(AppIcons.chevronDown,
+                    Icon(AppIcons.chevronDown,
                         size: 18, color: AppColors.muted),
                   ],
                 ),
@@ -188,7 +188,7 @@ class _P2PSellScreenState extends State<P2PSellScreen> {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               style:
-                  const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+                  TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
               decoration:
                   InputDecoration(hintText: '0.00', suffixText: asset.symbol),
             ),
@@ -260,13 +260,13 @@ class _BuyerOfferCard extends StatelessWidget {
                       TextSpan(
                           text:
                               '  ${buyer.trades} trades · ${buyer.completionPct}%',
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.muted, fontSize: 11)),
                     ]),
                   ),
                 ),
                 Text('₦${_formatInt(rateNgn.round())}',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary)),
@@ -278,7 +278,7 @@ class _BuyerOfferCard extends StatelessWidget {
               children: [
                 Text(
                     'Limit ₦${_formatInt(buyer.minNgn)} – ₦${_formatInt(buyer.maxNgn)}',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 11, color: AppColors.textSecondary)),
                 Container(
                   padding:
@@ -287,7 +287,7 @@ class _BuyerOfferCard extends StatelessWidget {
                       color: AppColors.surface2,
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(buyer.method,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 10.5,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textSecondary)),
@@ -374,7 +374,7 @@ class _P2POrderScreenState extends State<P2POrderScreen> {
                       '₦${_formatInt(widget.rateNgn.round())} / ${widget.asset.symbol}'),
                   _row('Buyer', widget.buyerName),
                   _row('Payment method', widget.method),
-                  const Divider(color: AppColors.hairline, height: 24),
+                  Divider(color: AppColors.hairline, height: 24),
                   _row("You'll receive", '₦${_totalNgn.toStringAsFixed(2)}',
                       emphasize: true),
                 ],
@@ -407,7 +407,7 @@ class _P2POrderScreenState extends State<P2POrderScreen> {
                       _paymentConfirmed
                           ? 'Payment confirmed by you — release the crypto to complete the trade.'
                           : '${widget.buyerName} is paying ₦${_totalNgn.toStringAsFixed(2)} to your bank account now.',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                           height: 1.4),
@@ -440,7 +440,7 @@ class _P2POrderScreenState extends State<P2POrderScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 12.5, color: AppColors.textSecondary)),
           Text(
             value,

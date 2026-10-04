@@ -42,9 +42,9 @@ class GoalTypePickerScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
+                IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
                 const SizedBox(width: 4),
-                const Text('New savings goal', style: AppText.pageTitle),
+                Text('New savings goal', style: AppText.pageTitle),
               ],
             ),
             const SizedBox(height: 6),
@@ -77,7 +77,7 @@ class GoalTypePickerScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      const Icon(AppIcons.chevronRight, size: 16, color: AppColors.muted),
+                      Icon(AppIcons.chevronRight, size: 16, color: AppColors.muted),
                     ],
                   ),
                 ),

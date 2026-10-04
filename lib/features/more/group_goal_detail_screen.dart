@@ -145,7 +145,7 @@ class _GroupGoalDetailScreenState extends State<GroupGoalDetailScreen> {
                   AppProgressBar(value: _progress, color: widget.progressColor),
                   const SizedBox(height: 10),
                   Text(widget.savedLabel,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 12.5, color: AppColors.textSecondary)),
                 ],
               ),
@@ -189,7 +189,7 @@ class _MemberChip extends StatelessWidget {
           color: AppColors.surface2, borderRadius: BorderRadius.circular(20)),
       child: Text(
         label,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 11.5,
           fontWeight: FontWeight.w700,
           color: AppColors.textSecondary,

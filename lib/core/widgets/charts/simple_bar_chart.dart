@@ -33,7 +33,7 @@ class SimpleBarChart extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text('${d.value.toInt()}%',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 9,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textSecondary)),
@@ -58,7 +58,7 @@ class SimpleBarChart extends StatelessWidget {
                         ),
                         const SizedBox(height: 7),
                         Text(d.label,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 9,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.muted)),

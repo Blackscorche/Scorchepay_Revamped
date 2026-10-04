@@ -115,9 +115,9 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
         task: () => notifier.exchangeGiftCard(brand: brand.name, faceValueUsd: faceValue, payoutNaira: payout),
       ),
     ));
-    if (!mounted) return;
+    if (!mounted || result == null) return;
 
-    final failed = result?.failed ?? true;
+    final failed = result.failed;
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => ResultScreen(
         success: !failed,
@@ -158,7 +158,7 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
             ),
             const SizedBox(height: 22),
             if (_tab == _GiftCardTab.redeem) ...[
-              const Text('Gift card code', style: AppText.sectionTitle),
+              Text('Gift card code', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               TextField(
                 controller: _codeController,
@@ -166,7 +166,7 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
                 decoration: const InputDecoration(hintText: 'Enter the code on your card'),
               ),
             ] else ...[
-              const Text('Brand', style: AppText.sectionTitle),
+              Text('Brand', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               GridView.count(
                 crossAxisCount: 3,
@@ -182,7 +182,7 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
               ),
               if (_tab == _GiftCardTab.buy) ...[
                 const SizedBox(height: 22),
-                const Text('Amount', style: AppText.sectionTitle),
+                Text('Amount', style: AppText.sectionTitle),
                 const SizedBox(height: 10),
                 TextField(
                   controller: _amountController,
@@ -192,7 +192,7 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
                 ),
               ] else ...[
                 const SizedBox(height: 22),
-                const Text('Card value', style: AppText.sectionTitle),
+                Text('Card value', style: AppText.sectionTitle),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,
@@ -202,7 +202,7 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
                   ],
                 ),
                 const SizedBox(height: 22),
-                const Text('Gift card code', style: AppText.sectionTitle),
+                Text('Gift card code', style: AppText.sectionTitle),
                 const SizedBox(height: 10),
                 TextField(
                   controller: _codeController,
@@ -216,7 +216,7 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
                       ? Container(
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                           decoration: BoxDecoration(color: AppColors.surface2, border: Border.all(color: AppColors.border), borderRadius: BorderRadius.circular(14)),
-                          child: const Row(
+                          child: Row(
                             children: [
                               Icon(AppIcons.camera, size: 18, color: AppColors.muted),
                               SizedBox(width: 10),
@@ -237,9 +237,9 @@ class _GiftCardScreenState extends ConsumerState<GiftCardScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('You\'ll receive (${(_brands[_brand!].exchangeRate * 100).toStringAsFixed(0)}% rate)', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                        Text('You\'ll receive (${(_brands[_brand!].exchangeRate * 100).toStringAsFixed(0)}% rate)', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                         Text('₦${(_exchangeDenomination! * _brands[_brand!].exchangeRate * 1545.20).toStringAsFixed(2)}',
-                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
                       ],
                     ),
                   ),

@@ -40,12 +40,12 @@ class ScanQrScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(AppIcons.qr,
+                        Icon(AppIcons.qr,
                             size: 64, color: AppColors.muted),
                         const SizedBox(height: 14),
-                        const Text('Camera preview', style: AppText.bodyMuted),
+                        Text('Camera preview', style: AppText.bodyMuted),
                         const SizedBox(height: 4),
-                        const Text('Any ScorchePay, bank or crypto QR code',
+                        Text('Any ScorchePay, bank or crypto QR code',
                             style: AppText.caption,
                             textAlign: TextAlign.center),
                       ],

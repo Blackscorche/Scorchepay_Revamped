@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import '../../core/app_icons.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
@@ -56,10 +57,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     icon: AppIcons.chevronLeft,
                     onTap: () => Navigator.of(context).pop(),
                   ),
-                  const SizedBox(height: 24),
-                  const Text('Create your account', style: AppText.pageTitle),
+                  const Align(alignment: Alignment.centerRight, child: ScorchMascot(activity: ScorchActivity.protect, size: 64)),
+                  Text('Create your account', style: AppText.pageTitle),
                   const SizedBox(height: 8),
-                  const Text("Let's get your Money OS set up.",
+                  Text("Let's get your Money OS set up.",
                       style: AppText.bodyMuted),
                   const SizedBox(height: 28),
                   TextField(
@@ -89,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Already have an account?',
+                        Text('Already have an account?',
                             style: AppText.bodyMuted),
                         GestureDetector(
                           onTap: () {
@@ -98,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   builder: (_) => const LoginScreen()),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             ' Log in',
                             style: TextStyle(
                               fontSize: 13,

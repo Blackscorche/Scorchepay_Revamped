@@ -23,57 +23,69 @@ class AppSpace {
 class AppTheme {
   AppTheme._();
 
-  static ThemeData get dark {
-    final base = ThemeData.dark(useMaterial3: true);
+  static ThemeData get dark =>
+      _build(Brightness.dark, AppColors.darkNeutrals, AppColors.accent);
+  static ThemeData get light =>
+      _build(Brightness.light, AppColors.lightNeutrals, AppColors.accent);
+
+  /// Builds a [ThemeData] from an explicit [NeutralPalette] and accent
+  /// [Color] rather than the mutable `AppColors.*` getters —
+  /// `theme:`/`darkTheme:` are both constructed up front on every
+  /// MaterialApp rebuild, before [AppColors.configure] /
+  /// [AppColors.configureAccent] have run for the resolved
+  /// brightness/accent, so reading the live getters here would make one
+  /// of the two variants briefly wrong (or both identical). Semantic
+  /// colors (gain/loss/warn/info) are true consts and safe to use
+  /// directly either way.
+  static ThemeData _build(Brightness brightness, NeutralPalette n, Color accent) {
+    final base = ThemeData(brightness: brightness, useMaterial3: true);
     return base.copyWith(
-      scaffoldBackgroundColor: AppColors.page,
+      scaffoldBackgroundColor: n.page,
       colorScheme: base.colorScheme.copyWith(
-        brightness: Brightness.dark,
-        primary: AppColors.accent,
-        secondary: AppColors.accent,
-        surface: AppColors.surface,
+        brightness: brightness,
+        primary: accent,
+        secondary: accent,
+        surface: n.surface,
         error: AppColors.loss,
       ),
       splashFactory: NoSplash.splashFactory,
       highlightColor: Colors.transparent,
-      dividerColor: AppColors.hairline,
-      textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: AppColors.accent,
-        selectionColor: AppColors.accentSoft,
-        selectionHandleColor: AppColors.accent,
+      dividerColor: n.hairline,
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: accent,
+        selectionColor: accent.withOpacity(0.13),
+        selectionHandleColor: accent,
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: false,
-        iconTheme: IconThemeData(color: AppColors.textPrimary),
+        iconTheme: IconThemeData(color: n.textPrimary),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surface,
-        hintStyle: const TextStyle(
-            color: AppColors.muted,
-            fontSize: 13.5,
-            fontWeight: FontWeight.w500),
+        fillColor: n.surface,
+        hintStyle: TextStyle(
+            color: n.muted, fontSize: 13.5, fontWeight: FontWeight.w500),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
-          borderSide: const BorderSide(color: AppColors.borderStrong),
+          borderSide: BorderSide(color: n.borderStrong),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
-          borderSide: const BorderSide(color: AppColors.borderStrong),
+          borderSide: BorderSide(color: n.borderStrong),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
-          borderSide: const BorderSide(color: AppColors.accent, width: 1.4),
+          borderSide: BorderSide(color: accent, width: 1.4),
         ),
       ),
       textTheme: base.textTheme.apply(
-        bodyColor: AppColors.textPrimary,
-        displayColor: AppColors.textPrimary,
+        bodyColor: n.textPrimary,
+        displayColor: n.textPrimary,
       ),
       pageTransitionsTheme: const PageTransitionsTheme(builders: {
         TargetPlatform.android: CupertinoPageTransitionsBuilder(),

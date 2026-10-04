@@ -32,21 +32,21 @@ class BiometricPromptScreen extends StatelessWidget {
                   Container(
                     width: 96,
                     height: 96,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: AppColors.surface2,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(AppIcons.faceId,
+                    child: Icon(AppIcons.faceId,
                         size: 40, color: AppColors.accent),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     'Enable biometric login',
                     textAlign: TextAlign.center,
                     style: AppText.detailTitle,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
+                  Text(
                     'Use Face ID or your fingerprint to log in faster next time.',
                     textAlign: TextAlign.center,
                     style: AppText.bodyMuted,

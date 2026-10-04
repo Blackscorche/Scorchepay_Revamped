@@ -96,7 +96,7 @@ class _ScheduledPaymentsScreenState extends State<ScheduledPaymentsScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Cancel Scheduled Payment', style: AppText.detailTitle),
+          Text('Cancel Scheduled Payment', style: AppText.detailTitle),
           const SizedBox(height: 10),
           Text(
             'Are you sure you want to cancel the scheduled transfer of ₦${_items[index].amount.toStringAsFixed(2)} to ${_items[index].recipient}?',
@@ -142,13 +142,13 @@ class _ScheduledPaymentsScreenState extends State<ScheduledPaymentsScreen> {
               onPressed: _createPayment,
             ),
             const SizedBox(height: 22),
-            const Text('Upcoming Scheduled Transfers', style: AppText.sectionTitle),
+            Text('Upcoming Scheduled Transfers', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             if (_items.isEmpty)
               AppCard(
                 padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
                 child: Column(
-                  children: const [
+                  children: [
                     Icon(AppIcons.calendar, size: 36, color: AppColors.muted),
                     SizedBox(height: 12),
                     Text('No scheduled payments', style: AppText.cardTitle),
@@ -174,7 +174,7 @@ class _ScheduledPaymentsScreenState extends State<ScheduledPaymentsScreen> {
                                 color: AppColors.accentSoft,
                                 borderRadius: BorderRadius.circular(11),
                               ),
-                              child: const Icon(AppIcons.calendar, size: 18, color: AppColors.accent),
+                              child: Icon(AppIcons.calendar, size: 18, color: AppColors.accent),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -260,7 +260,7 @@ class _NewScheduledPaymentFlowState extends State<_NewScheduledPaymentFlow> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
+            colorScheme: ColorScheme.dark(
               primary: AppColors.accent,
               surface: AppColors.surface2,
               onSurface: AppColors.textPrimary,
@@ -313,12 +313,12 @@ class _NewScheduledPaymentFlowState extends State<_NewScheduledPaymentFlow> {
               subtitle: 'Specify recipient, amount, date and optional attachment',
             ),
             const SizedBox(height: 22),
-            const Text('Recipient', style: AppText.sectionTitle),
+            Text('Recipient', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _recipientController,
               onChanged: (_) => setState(() {}),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: '@username, bank account or email',
                 prefixIcon: Icon(AppIcons.user, size: 18, color: AppColors.muted),
               ),
@@ -337,13 +337,13 @@ class _NewScheduledPaymentFlowState extends State<_NewScheduledPaymentFlow> {
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: AppColors.border),
                       ),
-                      child: Text(a.username, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
+                      child: Text(a.username, style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
                     ),
                   ),
               ],
             ),
             const SizedBox(height: 22),
-            const Text('Amount', style: AppText.sectionTitle),
+            Text('Amount', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _amountController,
@@ -355,7 +355,7 @@ class _NewScheduledPaymentFlowState extends State<_NewScheduledPaymentFlow> {
               ),
             ),
             const SizedBox(height: 22),
-            const Text('Execution Date', style: AppText.sectionTitle),
+            Text('Execution Date', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             GestureDetector(
               onTap: _selectDate,
@@ -372,18 +372,18 @@ class _NewScheduledPaymentFlowState extends State<_NewScheduledPaymentFlow> {
                   children: [
                     Row(
                       children: [
-                        const Icon(AppIcons.calendar, size: 18, color: AppColors.accent),
+                        Icon(AppIcons.calendar, size: 18, color: AppColors.accent),
                         const SizedBox(width: 10),
                         Text(_formatDate(_pickedDate), style: AppText.body.copyWith(fontWeight: FontWeight.w700)),
                       ],
                     ),
-                    const Text('Change date', style: TextStyle(fontSize: 12, color: AppColors.accent, fontWeight: FontWeight.w600)),
+                    Text('Change date', style: TextStyle(fontSize: 12, color: AppColors.accent, fontWeight: FontWeight.w600)),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 22),
-            const Text('Category', style: AppText.sectionTitle),
+            Text('Category', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -406,7 +406,7 @@ class _NewScheduledPaymentFlowState extends State<_NewScheduledPaymentFlow> {
               hint: 'Take a photo or choose invoice from library',
             ),
             const SizedBox(height: 22),
-            const Text('Note for Recipient', style: AppText.sectionTitle),
+            Text('Note for Recipient', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _noteController,
@@ -511,7 +511,7 @@ class _RecurringPaymentsScreenState extends State<RecurringPaymentsScreen> {
               onPressed: _addRule,
             ),
             const SizedBox(height: 22),
-            const Text('Active Standing Orders', style: AppText.sectionTitle),
+            Text('Active Standing Orders', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             AppCard(
               padding: const EdgeInsets.fromLTRB(18, 4, 18, 4),
@@ -618,7 +618,7 @@ class _NewRecurringRuleFlowState extends State<_NewRecurringRuleFlow> {
               subtitle: 'Set frequency, recipient and amount',
             ),
             const SizedBox(height: 22),
-            const Text('Recipient', style: AppText.sectionTitle),
+            Text('Recipient', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _recipientController,
@@ -626,7 +626,7 @@ class _NewRecurringRuleFlowState extends State<_NewRecurringRuleFlow> {
               decoration: const InputDecoration(hintText: '@username or bank account'),
             ),
             const SizedBox(height: 22),
-            const Text('Amount per Interval', style: AppText.sectionTitle),
+            Text('Amount per Interval', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _amountController,
@@ -635,7 +635,7 @@ class _NewRecurringRuleFlowState extends State<_NewRecurringRuleFlow> {
               decoration: const InputDecoration(hintText: '0.00', prefixText: '₦ '),
             ),
             const SizedBox(height: 22),
-            const Text('Frequency', style: AppText.sectionTitle),
+            Text('Frequency', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -802,7 +802,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 36),
                 child: Column(
                   children: [
-                    const Icon(AppIcons.receipt, size: 32, color: AppColors.muted),
+                    Icon(AppIcons.receipt, size: 32, color: AppColors.muted),
                     const SizedBox(height: 10),
                     Text(_tab == 0 ? 'No incoming requests' : 'No outgoing requests', style: AppText.cardTitle),
                   ],
@@ -920,7 +920,7 @@ class _NewRequestFlowState extends State<_NewRequestFlow> {
               subtitle: 'Send a request with an optional bill photo from your device',
             ),
             const SizedBox(height: 22),
-            const Text('Who are you requesting from?', style: AppText.sectionTitle),
+            Text('Who are you requesting from?', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _recipientController,
@@ -928,7 +928,7 @@ class _NewRequestFlowState extends State<_NewRequestFlow> {
               decoration: const InputDecoration(hintText: '@username or phone number'),
             ),
             const SizedBox(height: 22),
-            const Text('Amount', style: AppText.sectionTitle),
+            Text('Amount', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _amountController,
@@ -937,7 +937,7 @@ class _NewRequestFlowState extends State<_NewRequestFlow> {
               decoration: const InputDecoration(hintText: '0.00', prefixText: '₦ '),
             ),
             const SizedBox(height: 22),
-            const Text('What is it for?', style: AppText.sectionTitle),
+            Text('What is it for?', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _noteController,
@@ -1017,7 +1017,7 @@ class _PayLinksScreenState extends State<PayLinksScreen> {
             child: const Icon(AppIcons.qr, size: 120, color: Colors.black87),
           ),
           const SizedBox(height: 14),
-          Text(link.slug, style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.textPrimary, fontSize: 13)),
+          Text(link.slug, style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.textPrimary, fontSize: 13)),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -1065,7 +1065,7 @@ class _PayLinksScreenState extends State<PayLinksScreen> {
             const SizedBox(height: 20),
             PrimaryButton(label: 'Create new pay link', icon: AppIcons.plus, onPressed: _createLink),
             const SizedBox(height: 22),
-            const Text('Your Active Links', style: AppText.sectionTitle),
+            Text('Your Active Links', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             for (final link in _links)
               GestureDetector(
@@ -1081,7 +1081,7 @@ class _PayLinksScreenState extends State<PayLinksScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(child: Text(link.title, style: AppText.body.copyWith(fontWeight: FontWeight.w700))),
-                          Text(link.isFixedAmount ? '₦${link.amount.toStringAsFixed(2)}' : 'Open Amount', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: AppColors.textPrimary)),
+                          Text(link.isFixedAmount ? '₦${link.amount.toStringAsFixed(2)}' : 'Open Amount', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: AppColors.textPrimary)),
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -1091,7 +1091,7 @@ class _PayLinksScreenState extends State<PayLinksScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Total collected: ₦${link.collected.toStringAsFixed(2)}', style: const TextStyle(fontSize: 11.5, color: AppColors.gain, fontWeight: FontWeight.w600)),
-                          const Icon(AppIcons.chevronRight, size: 16, color: AppColors.muted),
+                          Icon(AppIcons.chevronRight, size: 16, color: AppColors.muted),
                         ],
                       ),
                     ],
@@ -1160,7 +1160,7 @@ class _NewPayLinkFlowState extends State<_NewPayLinkFlow> {
           children: [
             const DetailHeader(icon: AppIcons.link, title: 'Create Pay Link', subtitle: 'Customize title, link name and amount'),
             const SizedBox(height: 22),
-            const Text('Link Title / Purpose', style: AppText.sectionTitle),
+            Text('Link Title / Purpose', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _titleController,
@@ -1168,7 +1168,7 @@ class _NewPayLinkFlowState extends State<_NewPayLinkFlow> {
               decoration: const InputDecoration(hintText: 'e.g. Photography Session'),
             ),
             const SizedBox(height: 22),
-            const Text('Custom URL Slug', style: AppText.sectionTitle),
+            Text('Custom URL Slug', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _slugController,
@@ -1178,7 +1178,7 @@ class _NewPayLinkFlowState extends State<_NewPayLinkFlow> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Fixed Amount', style: AppText.sectionTitle),
+                Text('Fixed Amount', style: AppText.sectionTitle),
                 Switch(
                   value: _fixedAmount,
                   activeThumbColor: AppColors.accent,
@@ -1250,7 +1250,7 @@ class _BulkTransferScreenState extends State<BulkTransferScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Add Recipient', style: AppText.detailTitle),
+            Text('Add Recipient', style: AppText.detailTitle),
             const SizedBox(height: 14),
             TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Beneficiary Name', hintText: 'e.g. John Doe')),
             const SizedBox(height: 10),
@@ -1330,17 +1330,17 @@ class _BulkTransferScreenState extends State<BulkTransferScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Total Batch Payout', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                      Text('Total Batch Payout', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                       const SizedBox(height: 2),
-                      Text('₦${_totalAmount.toStringAsFixed(2)}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+                      Text('₦${_totalAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
                     ],
                   ),
-                  Text('${_recipients.length} recipients', style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: AppColors.accent)),
+                  Text('${_recipients.length} recipients', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: AppColors.accent)),
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Recipients Queue', style: AppText.sectionTitle),
+            Text('Recipients Queue', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             AppCard(
               padding: const EdgeInsets.fromLTRB(18, 4, 18, 4),
@@ -1355,7 +1355,7 @@ class _BulkTransferScreenState extends State<BulkTransferScreen> {
                             width: 36,
                             height: 36,
                             decoration: BoxDecoration(color: AppColors.surface2, borderRadius: BorderRadius.circular(10)),
-                            child: const Icon(AppIcons.building, size: 16, color: AppColors.textSecondary),
+                            child: Icon(AppIcons.building, size: 16, color: AppColors.textSecondary),
                           ),
                           const SizedBox(width: 12),
                           Expanded(

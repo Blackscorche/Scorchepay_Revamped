@@ -56,13 +56,13 @@ class NumericKeypad extends StatelessWidget {
         if (k.isEmpty) return const SizedBox.shrink();
         if (k == 'back') {
           return _KeypadButton(
-              child: const Icon(AppIcons.backspace,
+              child: Icon(AppIcons.backspace,
                   size: 20, color: AppColors.textSecondary),
               onTap: onBackspace);
         }
         return _KeypadButton(
           child: Text(k,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary)),

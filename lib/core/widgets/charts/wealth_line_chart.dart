@@ -7,21 +7,19 @@ import '../../../theme/app_colors.dart';
 /// this stays a pure plot.
 class WealthLineChart extends StatelessWidget {
   const WealthLineChart(
-      {super.key,
-      required this.points,
-      this.height = 76,
-      this.color = AppColors.accent});
+      {super.key, required this.points, this.height = 76, this.color});
 
   final List<double> points;
   final double height;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: height,
       width: double.infinity,
-      child: CustomPaint(painter: _LineChartPainter(points, color)),
+      child: CustomPaint(
+          painter: _LineChartPainter(points, color ?? AppColors.accent)),
     );
   }
 }

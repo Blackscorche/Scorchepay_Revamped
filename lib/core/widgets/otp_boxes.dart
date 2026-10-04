@@ -64,7 +64,7 @@ class _OtpBoxesState extends State<OtpBoxes> {
             textAlign: TextAlign.center,
             keyboardType: TextInputType.number,
             maxLength: 1,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary),
@@ -76,16 +76,16 @@ class _OtpBoxesState extends State<OtpBoxes> {
               contentPadding: EdgeInsets.zero,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.borderStrong),
+                borderSide: BorderSide(color: AppColors.borderStrong),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.borderStrong),
+                borderSide: BorderSide(color: AppColors.borderStrong),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide:
-                    const BorderSide(color: AppColors.accent, width: 1.6),
+                    BorderSide(color: AppColors.accent, width: 1.6),
               ),
             ),
             onChanged: (v) => _handleChange(i, v),

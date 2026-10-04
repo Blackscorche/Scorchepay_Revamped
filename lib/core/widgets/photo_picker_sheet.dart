@@ -94,7 +94,7 @@ class _SheetAction extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 13),
         decoration: BoxDecoration(
-          border: showDivider ? const Border(bottom: BorderSide(color: AppColors.hairline)) : null,
+          border: showDivider ? Border(bottom: BorderSide(color: AppColors.hairline)) : null,
         ),
         child: Row(
           children: [

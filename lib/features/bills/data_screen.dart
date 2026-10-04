@@ -79,7 +79,7 @@ class _DataScreenState extends State<DataScreen> {
                 title: 'Buy Data',
                 subtitle: 'Data bundles for any Nigerian network'),
             const SizedBox(height: 22),
-            const Text('Network', style: AppText.sectionTitle),
+            Text('Network', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -97,21 +97,21 @@ class _DataScreenState extends State<DataScreen> {
               ],
             ),
             const SizedBox(height: 22),
-            const Text('Phone number', style: AppText.sectionTitle),
+            Text('Phone number', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               style:
-                  const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
-              decoration: const InputDecoration(
+                  TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+              decoration: InputDecoration(
                 hintText: '080X XXX XXXX',
                 prefixIcon:
                     Icon(AppIcons.phone, size: 18, color: AppColors.muted),
               ),
             ),
             const SizedBox(height: 22),
-            const Text('Choose a plan', style: AppText.sectionTitle),
+            Text('Choose a plan', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             for (int i = 0; i < _dataPlans.length; i++)
               _PlanRow(

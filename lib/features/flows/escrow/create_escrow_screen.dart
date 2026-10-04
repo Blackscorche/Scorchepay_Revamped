@@ -148,10 +148,10 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
                 children: [
                   IconButton(
                       onPressed: _back,
-                      icon: const Icon(AppIcons.chevronLeft,
+                      icon: Icon(AppIcons.chevronLeft,
                           color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
-                  const Text('New Escrow', style: AppText.pageTitle),
+                  Text('New Escrow', style: AppText.pageTitle),
                 ],
               ),
               const SizedBox(height: 4),
@@ -192,7 +192,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('What kind of escrow is this?', style: AppText.sectionTitle),
+        Text('What kind of escrow is this?', style: AppText.sectionTitle),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
@@ -213,7 +213,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Who is the other party?', style: AppText.sectionTitle),
+        Text('Who is the other party?', style: AppText.sectionTitle),
         const SizedBox(height: 10),
         for (final a in DemoAccounts.all)
           GestureDetector(
@@ -239,19 +239,19 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
                       TextSpan(text: a.displayName, style: AppText.body),
                       TextSpan(
                           text: '  ${a.username}',
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.muted, fontSize: 11.5)),
                     ])),
                   ),
                   if (_counterparty == a)
-                    const Icon(AppIcons.check,
+                    Icon(AppIcons.check,
                         size: 16, color: AppColors.accent),
                 ],
               ),
             ),
           ),
         const SizedBox(height: 22),
-        const Text('Your role', style: AppText.sectionTitle),
+        Text('Your role', style: AppText.sectionTitle),
         const SizedBox(height: 10),
         Row(
           children: [
@@ -276,12 +276,12 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Description', style: AppText.sectionTitle),
+        Text('Description', style: AppText.sectionTitle),
         const SizedBox(height: 10),
         TextField(
           controller: _descController,
           onChanged: (_) => setState(() {}),
-          style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
           decoration:
               const InputDecoration(hintText: 'e.g. iPhone 16 Pro, 256GB Desert Titanium'),
         ),
@@ -294,7 +294,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
           hint: 'Take a photo of product, agreement or asset',
         ),
         const SizedBox(height: 22),
-        const Text('Inspection Period', style: AppText.sectionTitle),
+        Text('Inspection Period', style: AppText.sectionTitle),
         const SizedBox(height: 10),
         Wrap(
           spacing: 8,
@@ -311,7 +311,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Multiple milestones', style: AppText.sectionTitle),
+            Text('Multiple milestones', style: AppText.sectionTitle),
             Switch(
               value: _multiMilestone,
               activeThumbColor: AppColors.accent,
@@ -321,14 +321,14 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
         ),
         if (!_multiMilestone) ...[
           const SizedBox(height: 10),
-          const Text('Amount', style: AppText.sectionTitle),
+          Text('Amount', style: AppText.sectionTitle),
           const SizedBox(height: 10),
           TextField(
             controller: _singleAmountController,
             onChanged: (_) => setState(() {}),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             style:
-                const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+                TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
             decoration:
                 const InputDecoration(hintText: '0.00', prefixText: '₦ '),
           ),
@@ -347,7 +347,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Milestones', style: AppText.sectionTitle),
+        Text('Milestones', style: AppText.sectionTitle),
         const SizedBox(height: 10),
         for (int i = 0; i < _milestoneControllers.length; i++)
           Padding(
@@ -361,7 +361,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Milestone ${i + 1}',
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 12.5,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textSecondary)),
@@ -378,7 +378,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
                   TextField(
                     controller: _milestoneControllers[i].$1,
                     onChanged: (_) => setState(() {}),
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.textPrimary, fontSize: 13),
                     decoration: const InputDecoration(
                         hintText: 'Milestone description (e.g. 50% deposit)'),
@@ -389,7 +389,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
                     onChanged: (_) => setState(() {}),
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.textPrimary, fontSize: 13),
                     decoration: const InputDecoration(
                         hintText: '0.00', prefixText: '₦ '),
@@ -414,7 +414,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Review', style: AppText.sectionTitle),
+        Text('Review', style: AppText.sectionTitle),
         const SizedBox(height: 10),
         AppCard(
           padding: const EdgeInsets.all(16),
@@ -447,7 +447,7 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
             _role == EscrowRole.buyer
                 ? 'Since this is a demo, ${_counterparty?.displayName}\'s acceptance and delivery are simulated from the escrow detail screen — you\'ll fund it yourself as the buyer.'
                 : 'Since this is a demo, ${_counterparty?.displayName}\'s acceptance and funding as buyer are simulated from the escrow detail screen — you\'ll submit delivery evidence as the seller.',
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 11.5, color: AppColors.textSecondary, height: 1.4),
           ),
         ),
@@ -462,12 +462,12 @@ class _CreateEscrowScreenState extends ConsumerState<CreateEscrowScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 12.5, color: AppColors.textSecondary)),
           Flexible(
               child: Text(value,
                   textAlign: TextAlign.right,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary))),

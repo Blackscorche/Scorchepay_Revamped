@@ -39,7 +39,7 @@ class DonutChart extends StatelessWidget {
           Container(
             width: size * 0.64,
             height: size * 0.64,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 color: AppColors.surface, shape: BoxShape.circle),
             alignment: Alignment.center,
             child: Column(

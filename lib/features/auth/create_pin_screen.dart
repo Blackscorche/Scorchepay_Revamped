@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import '../../core/app_icons.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
@@ -56,10 +57,10 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
                     icon: AppIcons.chevronLeft,
                     onTap: () => Navigator.of(context).pop(),
                   ),
-                  const SizedBox(height: 24),
-                  const Text('Create your PIN', style: AppText.pageTitle),
+                  const Align(alignment: Alignment.centerRight, child: ScorchMascot(activity: ScorchActivity.protect, size: 64)),
+                  Text('Create your PIN', style: AppText.pageTitle),
                   const SizedBox(height: 8),
-                  const Text("You'll use this to confirm payments and log in.",
+                  Text("You'll use this to confirm payments and log in.",
                       style: AppText.bodyMuted),
                   const SizedBox(height: 40),
                   Center(child: PinDots(length: 4, filled: _pin.length)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 
 import '../../core/app_icons.dart';
 import '../../core/widgets/app_card.dart';
@@ -14,6 +15,7 @@ import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../more/book_detail_screen.dart';
 import '../send/scan_qr_screen.dart';
+import 'bitcoin_wallet_screen.dart';
 import 'coin_search_screen.dart';
 import 'crypto_trade_screen.dart';
 import 'p2p_sell_screen.dart';
@@ -107,9 +109,11 @@ class _CryptoScreenState extends State<CryptoScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(18, 8, 18, 100),
         children: [
+        const ScorchCompanion(activity: ScorchActivity.crypto, title: 'A new orbit for your money', message: 'Explore assets. Review the details before you trade.'),
+
           Row(
             children: [
-              const Text('Crypto', style: AppText.pageTitle),
+              Text('Crypto', style: AppText.pageTitle),
               const Spacer(),
               if (_live)
                 Container(
@@ -138,8 +142,8 @@ class _CryptoScreenState extends State<CryptoScreen> {
             readOnly: true,
             onTap: () => _searchCoins(context),
             style:
-                const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
-            decoration: const InputDecoration(
+                TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+            decoration: InputDecoration(
               hintText: 'Search all coins',
               prefixIcon:
                   Icon(AppIcons.search, size: 18, color: AppColors.muted),
@@ -229,6 +233,16 @@ class _CryptoScreenState extends State<CryptoScreen> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 9),
+          SizedBox(
+            width: double.infinity,
+            child: _OutlineButton(
+              icon: AppIcons.bitcoin,
+              label: 'Real Bitcoin wallet (Signet testnet)',
+              onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const BitcoinWalletScreen())),
+            ),
           ),
           const SectionTitle('Holdings'),
           AppCard(
@@ -337,7 +351,7 @@ class _HoldingRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           border: showDivider
-              ? const Border(bottom: BorderSide(color: AppColors.hairline))
+              ? Border(bottom: BorderSide(color: AppColors.hairline))
               : null,
         ),
         child: Row(
@@ -356,7 +370,7 @@ class _HoldingRow extends StatelessWidget {
                         TextSpan(text: asset.name, style: AppText.body),
                         TextSpan(
                             text: '  ${asset.symbol}',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: AppColors.muted,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 11.5)),

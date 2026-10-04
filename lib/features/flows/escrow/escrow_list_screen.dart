@@ -31,10 +31,10 @@ class EscrowListScreen extends ConsumerWidget {
                 children: [
                   IconButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(AppIcons.chevronLeft,
+                      icon: Icon(AppIcons.chevronLeft,
                           color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
-                  const Text('Escrow', style: AppText.pageTitle),
+                  Text('Escrow', style: AppText.pageTitle),
                 ],
               ),
               const SizedBox(height: 14),

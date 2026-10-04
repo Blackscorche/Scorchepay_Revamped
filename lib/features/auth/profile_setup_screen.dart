@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/app_icons.dart';
 import '../../core/widgets/buttons.dart';
@@ -69,10 +70,10 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   IconCircleButton(
                       icon: AppIcons.chevronLeft,
                       onTap: () => Navigator.of(context).pop()),
-                  const SizedBox(height: 24),
-                  const Text('Set up your profile', style: AppText.pageTitle),
+                  const Align(alignment: Alignment.centerRight, child: ScorchMascot(activity: ScorchActivity.protect, size: 64)),
+                  Text('Set up your profile', style: AppText.pageTitle),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                       'Add a photo from your device and pick a username people will recognize.',
                       style: AppText.bodyMuted),
                   const SizedBox(height: 32),
@@ -99,7 +100,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                             ),
                             alignment: Alignment.center,
                             child: _photo == null
-                                ? const Icon(AppIcons.user, size: 40, color: AppColors.muted)
+                                ? Icon(AppIcons.user, size: 40, color: AppColors.muted)
                                 : null,
                           ),
                           Positioned(
@@ -140,7 +141,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text('You can change this later in Profile settings.',
+                  Text('You can change this later in Profile settings.',
                       style: AppText.caption),
                   const Spacer(),
                   PrimaryButton(

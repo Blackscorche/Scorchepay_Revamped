@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/app_icons.dart';
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('View balance in', style: AppText.detailTitle),
+          Text('View balance in', style: AppText.detailTitle),
           const SizedBox(height: 4),
           for (int i = 0; i < _currencyOptions.length; i++)
             _CurrencyRow(
@@ -78,6 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
           onBell: () => _openBook('notifications'),
           onProfile: () => _openBook('profile'),
         ),
+
+        const ScorchCompanion(activity: ScorchActivity.welcome, title: 'A little spark for your day', message: 'Meet Scorch. Your money companion, every step of the way.'),
         GlassHeroCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,11 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(_currencyOptions[_currencyIndex].code,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.textSecondary)),
-                              const Icon(AppIcons.chevronDown,
+                              Icon(AppIcons.chevronDown,
                                   size: 13, color: AppColors.textSecondary),
                             ],
                           ),
@@ -149,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 imageFilter: ImageFilter.blur(
                     sigmaX: _hideBalance ? 8 : 0, sigmaY: _hideBalance ? 8 : 0),
                 child: Text(_currencyOptions[_currencyIndex].equivalent,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 12.5, color: AppColors.muted)),
               ),
               const SizedBox(height: 11),
@@ -183,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               WealthLineChart(points: MockData.wealthTrend),
               const SizedBox(height: 2),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('6d ago',
@@ -460,7 +463,7 @@ class _TopBar extends ConsumerWidget {
                   child: photo == null
                       ? Text(
                           initials,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 13,
                             color: AppColors.textSecondary,
@@ -474,7 +477,7 @@ class _TopBar extends ConsumerWidget {
                   children: [
                     Text(
                       'Hello, ${profile.displayName}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 14.5,
                         color: AppColors.textPrimary,
@@ -483,7 +486,7 @@ class _TopBar extends ConsumerWidget {
                     const SizedBox(height: 1),
                     Text(
                       '@${profile.username} · Lagos, NG',
-                      style: const TextStyle(fontSize: 11.5, color: AppColors.muted),
+                      style: TextStyle(fontSize: 11.5, color: AppColors.muted),
                     ),
                   ],
                 ),
@@ -515,7 +518,7 @@ class _StatMini extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.025),
+        color: AppColors.textPrimary.withOpacity(0.025),
         border: Border.all(color: AppColors.hairline),
         borderRadius: BorderRadius.circular(12),
       ),
@@ -523,7 +526,7 @@ class _StatMini extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 9.5,
                   fontWeight: FontWeight.w700,
                   color: AppColors.muted,
@@ -639,7 +642,7 @@ class _CurrencyRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           border: showDivider
-              ? const Border(bottom: BorderSide(color: AppColors.hairline))
+              ? Border(bottom: BorderSide(color: AppColors.hairline))
               : null,
         ),
         child: Row(
@@ -658,15 +661,15 @@ class _CurrencyRow extends StatelessWidget {
               Container(
                 width: 34,
                 height: 34,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     color: AppColors.accentSoft, shape: BoxShape.circle),
-                child: const Icon(AppIcons.coins,
+                child: Icon(AppIcons.coins,
                     size: 15, color: AppColors.accent),
               ),
             const SizedBox(width: 12),
             Expanded(child: Text(option.code, style: AppText.body)),
             if (selected)
-              const Icon(AppIcons.check, size: 18, color: AppColors.accent),
+              Icon(AppIcons.check, size: 18, color: AppColors.accent),
           ],
         ),
       ),
@@ -695,13 +698,7 @@ class _AnnouncementCard extends StatelessWidget {
       height: 92,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        gradient: filled
-            ? AppColors.accentGradient
-            : const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF1A1210), Color(0xFF121012)],
-              ),
+        gradient: filled ? AppColors.accentGradient : AppColors.heroGradient,
         border: filled ? null : Border.all(color: AppColors.border),
         borderRadius: BorderRadius.circular(18),
       ),

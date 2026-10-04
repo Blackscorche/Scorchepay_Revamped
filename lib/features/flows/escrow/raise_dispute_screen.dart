@@ -66,7 +66,7 @@ class _RaiseDisputeScreenState extends ConsumerState<RaiseDisputeScreen> {
               subtitle: 'Freeze funds and submit claim with photo evidence to arbitration',
             ),
             const SizedBox(height: 20),
-            const Text('Dispute Reason', style: AppText.sectionTitle),
+            Text('Dispute Reason', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -81,13 +81,13 @@ class _RaiseDisputeScreenState extends ConsumerState<RaiseDisputeScreen> {
               ],
             ),
             const SizedBox(height: 22),
-            const Text('Describe What Happened', style: AppText.sectionTitle),
+            Text('Describe What Happened', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _descController,
               onChanged: (_) => setState(() {}),
               maxLines: 4,
-              style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+              style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
               decoration: const InputDecoration(
                 hintText: 'Provide complete details regarding the condition, tracking status or communication with the seller...',
               ),

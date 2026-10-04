@@ -27,7 +27,7 @@ class SendConfirmRecipientScreen extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(AppIcons.chevronLeft,
+                      icon: Icon(AppIcons.chevronLeft,
                           color: AppColors.textPrimary)),
                 ],
               ),
@@ -35,24 +35,24 @@ class SendConfirmRecipientScreen extends StatelessWidget {
               Container(
                 width: 84,
                 height: 84,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     color: AppColors.surface2, shape: BoxShape.circle),
                 alignment: Alignment.center,
                 child: Text(account.initials,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary)),
               ),
               const SizedBox(height: 18),
-              const Text('Sending to', style: AppText.bodyMuted),
+              Text('Sending to', style: AppText.bodyMuted),
               const SizedBox(height: 6),
               Text(account.displayName,
                   style: AppText.pageTitle.copyWith(fontSize: 22),
                   textAlign: TextAlign.center),
               const SizedBox(height: 4),
               Text(account.username,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.muted,
                       fontSize: 13.5,
                       fontWeight: FontWeight.w600)),

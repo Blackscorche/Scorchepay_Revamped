@@ -9,10 +9,11 @@ export const paymentsRouter = Router();
 /** Step 1 of a card/bank-transfer top-up: get a real Paystack checkout URL. */
 paymentsRouter.post("/initialize", async (req, res, next) => {
   try {
-    const { userId, email, amountNaira } = req.body;
-    if (!userId || !email || !amountNaira) {
-      return res.status(400).json({ error: "userId, email, and amountNaira are required" });
+    const { email, amountNaira } = req.body;
+    if (!email || !amountNaira) {
+      return res.status(400).json({ error: "email and amountNaira are required" });
     }
+    const userId = req.userId!;
 
     const reference = `scp_${uuid()}`;
     await pool.query(`INSERT INTO payment_transactions (reference, user_id, amount, currency, status) VALUES ($1, $2, $3, $4, 'pending')`, [
@@ -41,6 +42,7 @@ paymentsRouter.get("/verify/:reference", async (req, res, next) => {
     const { rows } = await pool.query(`SELECT * FROM payment_transactions WHERE reference = $1`, [reference]);
     if (!rows.length) return res.status(404).json({ error: "Unknown reference" });
     const txn = rows[0];
+    if (txn.user_id !== req.userId) return res.status(404).json({ error: "Unknown reference" });
 
     if (txn.status === "success") {
       return res.json({ status: "success", alreadyProcessed: true });
@@ -72,7 +74,7 @@ paymentsRouter.get("/verify/:reference", async (req, res, next) => {
 /** Creates the user's dedicated virtual account (spec §9's bank-transfer funding rail). */
 paymentsRouter.post("/virtual-account", async (req, res, next) => {
   try {
-    const { userId } = req.body;
+    const userId = req.userId!;
     const { rows } = await pool.query(`SELECT paystack_customer_code FROM users WHERE id = $1`, [userId]);
     if (!rows.length) return res.status(404).json({ error: "User not found" });
 

@@ -34,7 +34,7 @@ class DisputeResolutionScreen extends ConsumerWidget {
       }
     }
     if (e == null || m == null) {
-      return const Scaffold(
+      return Scaffold(
           backgroundColor: AppColors.page,
           body: Center(
               child: Text('Dispute not found', style: AppText.bodyMuted)));
@@ -52,10 +52,10 @@ class DisputeResolutionScreen extends ConsumerWidget {
               children: [
                 IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(AppIcons.chevronLeft,
+                    icon: Icon(AppIcons.chevronLeft,
                         color: AppColors.textPrimary)),
                 const SizedBox(width: 4),
-                const Expanded(
+                Expanded(
                     child: Text('Dispute review', style: AppText.pageTitle)),
               ],
             ),
@@ -137,9 +137,9 @@ class DisputeResolutionScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Confirm resolution', style: AppText.detailTitle),
+            Text('Confirm resolution', style: AppText.detailTitle),
             const SizedBox(height: 8),
-            const Text('This action is final and cannot be undone.',
+            Text('This action is final and cannot be undone.',
                 style: AppText.bodyMuted),
             const SizedBox(height: 20),
             PrimaryButton(

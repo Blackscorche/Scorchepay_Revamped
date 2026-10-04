@@ -10,6 +10,14 @@ class MockData {
   MockData._();
 
   static const List<BookItem> books = [
+    BookItem(id: 'gift_exchange', group: 'Exchange', icon: AppIcons.giftCard,
+        title: 'Gift Exchange', blurb: 'Sell cards · buy cards · track orders', type: BookType.simpleList),
+    BookItem(id: 'p2p_market', group: 'Exchange', icon: AppIcons.users,
+        title: 'P2P Market', blurb: 'Buy and sell crypto · escrow · orders', type: BookType.simpleList),
+    BookItem(id: 'merchant_exchange', group: 'Workspace Previews', icon: AppIcons.building,
+        title: 'Merchant Desk', blurb: 'Gift card orders · P2P offers · settlements', type: BookType.simpleList),
+    BookItem(id: 'admin_exchange', group: 'Workspace Previews', icon: AppIcons.shield,
+        title: 'Admin Desk', blurb: 'Disputes · merchants · reconciliation', type: BookType.simpleList),
     BookItem(
         id: 'send',
         group: 'Pay & Move',
@@ -137,6 +145,13 @@ class MockData {
         blurb: 'All your alerts in one feed',
         type: BookType.notifications),
     BookItem(
+        id: 'appearance',
+        group: 'Account',
+        icon: AppIcons.contrast,
+        title: 'Appearance',
+        blurb: 'System, light or dark theme',
+        type: BookType.simpleList),
+    BookItem(
         id: 'business',
         group: 'Business & Dev',
         icon: AppIcons.briefcase,
@@ -207,7 +222,7 @@ class MockData {
     FiatBalance(code: 'AED', flag: CountryFlag.aed, amount: 'AED 2,410.00'),
   ];
 
-  static const List<AllocationSlice> allocation = [
+  static List<AllocationSlice> get allocation => [
     AllocationSlice(label: 'NGN', pct: 34, color: AppColors.accent),
     AllocationSlice(label: 'Crypto', pct: 28, color: AppColors.accentTint1),
     AllocationSlice(label: 'USD', pct: 20, color: AppColors.accentShade1),

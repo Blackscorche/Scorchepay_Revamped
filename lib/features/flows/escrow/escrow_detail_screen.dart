@@ -7,6 +7,7 @@ import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../state/models/escrow.dart';
 import '../../../state/providers/providers.dart';
+import '../../../state/services/smart_pay_engine.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../shared/pin_confirm_screen.dart';
@@ -61,7 +62,7 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
     final escrows = ref.watch(escrowsProvider);
     final e = _find(escrows);
     if (e == null) {
-      return const Scaffold(
+      return Scaffold(
           backgroundColor: AppColors.page,
           body: Center(
               child: Text('Escrow not found', style: AppText.bodyMuted)));
@@ -77,7 +78,7 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
               children: [
                 IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(AppIcons.chevronLeft,
+                    icon: Icon(AppIcons.chevronLeft,
                         color: AppColors.textPrimary)),
                 const SizedBox(width: 4),
                 Expanded(
@@ -96,7 +97,7 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Status',
+                      Text('Status',
                           style: TextStyle(
                               fontSize: 12.5, color: AppColors.textSecondary)),
                       StatusBadge(
@@ -205,7 +206,7 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
             children: [
               Expanded(child: Text(m.description, style: AppText.body)),
               Text('₦${m.amount.toStringAsFixed(2)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary)),
@@ -327,21 +328,29 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
     ));
     if (confirmed != true || !context.mounted) return;
 
-    await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => ProcessingScreen(
+    final result = await Navigator.of(context).push<SmartPayResult>(MaterialPageRoute(
+      builder: (_) => ProcessingScreen<SmartPayResult>(
           steps: const ['Moving funds into escrow…'],
           task: () => notifier.fundEscrow(e.id)),
     ));
     if (!context.mounted) return;
+    final failed = result == null || !result.isSuccess;
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => ResultScreen(
-        success: true,
-        headline: 'Escrow funded',
-        lines: [
-          ResultLine('Amount', '₦${e.totalAmount.toStringAsFixed(2)}'),
-          ResultLine('Held until', 'Release or dispute resolution')
-        ],
-        primaryLabel: 'Done',
+        success: !failed,
+        headline: failed ? 'Funding failed' : 'Escrow funded',
+        detailMessage: failed
+            ? (result?.outcome == SmartPayOutcome.insufficientFunds
+                ? 'Insufficient balance — nothing was moved into escrow.'
+                : 'Something went wrong — nothing was moved into escrow.')
+            : null,
+        lines: failed
+            ? const []
+            : [
+                ResultLine('Amount', '₦${e.totalAmount.toStringAsFixed(2)}'),
+                ResultLine('Held until', 'Release or dispute resolution')
+              ],
+        primaryLabel: failed ? 'Try again' : 'Done',
         onPrimary: () => Navigator.of(context).pop(),
       ),
     ));
@@ -360,7 +369,7 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Release funds?', style: AppText.detailTitle),
+            Text('Release funds?', style: AppText.detailTitle),
             const SizedBox(height: 8),
             Text(
                 '₦${m.amount.toStringAsFixed(2)} will be released to ${e.counterpartyName} immediately. This cannot be undone.',
@@ -389,11 +398,11 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
       padding: const EdgeInsets.all(14),
       child: Row(
         children: [
-          const Icon(AppIcons.bell, size: 16, color: AppColors.accent),
+          Icon(AppIcons.bell, size: 16, color: AppColors.accent),
           const SizedBox(width: 10),
           Expanded(
               child: Text(text,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 12.5, color: AppColors.textSecondary))),
         ],
       ),
@@ -411,7 +420,7 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
               Container(
                   width: 8,
                   height: 8,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       color: AppColors.accent, shape: BoxShape.circle)),
               if (!last)
                 Container(width: 1.5, height: 30, color: AppColors.hairline),
@@ -423,7 +432,7 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(ev.description,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textPrimary)),
@@ -445,12 +454,12 @@ class _EscrowDetailScreenState extends ConsumerState<EscrowDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 12.5, color: AppColors.textSecondary)),
           Flexible(
               child: Text(value,
                   textAlign: TextAlign.right,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary))),

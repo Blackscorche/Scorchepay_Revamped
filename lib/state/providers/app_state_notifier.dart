@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../data/app_environment.dart';
 import '../models/app_notification.dart';
 import '../models/automation.dart';
 import '../models/escrow.dart';
@@ -25,6 +26,7 @@ const _uuid = Uuid();
 /// pattern) and persist to disk.
 class AppStateNotifier extends StateNotifier<AppState> {
   AppStateNotifier(this._store) : super(AppState.seed()) {
+    if (!AppEnvironment.isDemo) throw StateError('Demo state cannot be loaded in live mode');
     _load();
   }
 
@@ -67,14 +69,22 @@ class AppStateNotifier extends StateNotifier<AppState> {
       required double amount,
       required String currency,
       String? fixedSourceCurrency}) async {
-    final result = await SmartPayEngine.payBill(state,
-        biller: biller,
-        customerId: customerId,
-        amount: amount,
-        currency: currency,
-        fixedSourceCurrency: fixedSourceCurrency);
-    await _commit();
-    return result;
+    try {
+      final result = await SmartPayEngine.payBill(state,
+          biller: biller,
+          customerId: customerId,
+          amount: amount,
+          currency: currency,
+          fixedSourceCurrency: fixedSourceCurrency);
+      await _commit();
+      return result;
+    } on InsufficientFundsException catch (ex) {
+      return SmartPayResult.insufficientFunds(FundingPlan(
+          nativeCurrency: currency,
+          nativeAmount: amount,
+          legs: const [],
+          shortBy: ex.shortBy));
+    }
   }
 
   FundingPlan planPayment(
@@ -91,12 +101,14 @@ class AppStateNotifier extends StateNotifier<AppState> {
   // Send Money
   // ---------------------------------------------------------------------
 
+  /// Explicit demo repository. Live transfers use the server-owned operation API.
   Future<bool> sendInternal(
       {required String toUsername,
       required String toDisplayName,
       required String currency,
       required double amount,
       String? note}) async {
+
     try {
       LedgerService.internalTransferOut(state,
           currency: currency,
@@ -104,20 +116,28 @@ class AppStateNotifier extends StateNotifier<AppState> {
           recipientUsername: toUsername,
           recipientDisplayName: toDisplayName,
           note: note);
-      state.notifications.insert(
-          0,
-          AppNotification(
-              id: _uuid.v4(),
-              at: DateTime.now(),
-              category: NotificationCategory.transfers,
-              title: 'Money sent',
-              body:
-                  '${amount.toStringAsFixed(2)} $currency sent to $toDisplayName.'));
+      await _recordLocalSendNotification(
+          currency: currency, amount: amount, toDisplayName: toDisplayName);
       await _commit();
       return true;
     } on InsufficientFundsException {
       return false;
     }
+  }
+
+  Future<void> _recordLocalSendNotification(
+      {required String currency,
+      required double amount,
+      required String toDisplayName}) async {
+    state.notifications.insert(
+        0,
+        AppNotification(
+            id: _uuid.v4(),
+            at: DateTime.now(),
+            category: NotificationCategory.transfers,
+            title: 'Money sent',
+            body:
+                '${amount.toStringAsFixed(2)} $currency sent to $toDisplayName.'));
   }
 
   Future<ProviderResult> sendToBank(
@@ -385,9 +405,18 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   Future<SmartPayResult> fundEscrow(String escrowId) async {
-    final result = EscrowService.fund(state, escrowId);
-    await _commit();
-    return result;
+    try {
+      final result = EscrowService.fund(state, escrowId);
+      await _commit();
+      return result;
+    } on InsufficientFundsException catch (ex) {
+      final e = EscrowService.find(state, escrowId);
+      return SmartPayResult.insufficientFunds(FundingPlan(
+          nativeCurrency: e?.currency ?? '',
+          nativeAmount: e?.totalAmount ?? 0,
+          legs: const [],
+          shortBy: ex.shortBy));
+    }
   }
 
   Future<void> simulateCounterpartyFundEscrow(String escrowId) async {
@@ -442,10 +471,18 @@ class AppStateNotifier extends StateNotifier<AppState> {
 
   Future<SmartPayResult> contributeSavings(String goalId, double amount,
       {String? fundingSource}) async {
-    final result = SavingsService.contribute(state, goalId, amount,
-        fundingSource: fundingSource);
-    await _commit();
-    return result;
+    try {
+      final result = SavingsService.contribute(state, goalId, amount,
+          fundingSource: fundingSource);
+      await _commit();
+      return result;
+    } on InsufficientFundsException catch (ex) {
+      return SmartPayResult.insufficientFunds(FundingPlan(
+          nativeCurrency: fundingSource ?? '',
+          nativeAmount: amount,
+          legs: const [],
+          shortBy: ex.shortBy));
+    }
   }
 
   Future<double> withdrawSavings(String goalId, double amount) async {

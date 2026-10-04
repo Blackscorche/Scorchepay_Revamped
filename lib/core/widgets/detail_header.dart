@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../app_icons.dart';
 import 'buttons.dart';
+import 'scorch_mascot.dart';
 
 /// Standard "back + icon badge + title/subtitle" header used at the top
 /// of pushed detail screens (bills sub-flows, book details, etc.) so
@@ -27,14 +27,7 @@ class DetailHeader extends StatelessWidget {
             icon: AppIcons.chevronLeft,
             onTap: () => Navigator.of(context).pop()),
         const SizedBox(width: 12),
-        Container(
-          width: 42,
-          height: 42,
-          decoration: BoxDecoration(
-              color: AppColors.accentSoft,
-              borderRadius: BorderRadius.circular(13)),
-          child: Icon(icon, size: 19, color: AppColors.accent),
-        ),
+        ScorchMascot(activity: ScorchMascot.activityFor(title), size: 48),
         const SizedBox(width: 12),
         Expanded(
           child: Column(

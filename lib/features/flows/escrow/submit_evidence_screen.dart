@@ -57,19 +57,19 @@ class _SubmitEvidenceScreenState extends ConsumerState<SubmitEvidenceScreen> {
             children: [
               Row(
                 children: [
-                  IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
+                  IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
-                  const Text('Submit evidence', style: AppText.pageTitle),
+                  Text('Submit evidence', style: AppText.pageTitle),
                 ],
               ),
               const SizedBox(height: 18),
-              const Text('Tracking number / delivery note', style: AppText.sectionTitle),
+              Text('Tracking number / delivery note', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               TextField(
                 controller: _noteController,
                 onChanged: (_) => setState(() {}),
                 maxLines: 4,
-                style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
                 decoration: const InputDecoration(hintText: 'e.g. GIG Logistics tracking GIG-3391-NG, delivered to front desk'),
               ),
               const SizedBox(height: 14),
@@ -83,10 +83,10 @@ class _SubmitEvidenceScreenState extends ConsumerState<SubmitEvidenceScreen> {
                           border: Border.all(color: AppColors.border),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
                             Icon(AppIcons.camera, size: 18, color: AppColors.muted),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text('Attach a photo (optional)', style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
                           ],
                         ),

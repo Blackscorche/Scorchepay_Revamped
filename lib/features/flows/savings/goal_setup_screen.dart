@@ -115,25 +115,25 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
             children: [
               Row(
                 children: [
-                  IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
+                  IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
-                  const Text('Set up goal', style: AppText.pageTitle),
+                  Text('Set up goal', style: AppText.pageTitle),
                 ],
               ),
               const SizedBox(height: 16),
               Expanded(
                 child: ListView(
                   children: [
-                    const Text('Goal name', style: AppText.sectionTitle),
+                    Text('Goal name', style: AppText.sectionTitle),
                     const SizedBox(height: 10),
                     TextField(
                       controller: _nameController,
                       onChanged: (_) => setState(() {}),
-                      style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+                      style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
                       decoration: const InputDecoration(hintText: 'e.g. New laptop'),
                     ),
                     const SizedBox(height: 22),
-                    const Text('Currency', style: AppText.sectionTitle),
+                    Text('Currency', style: AppText.sectionTitle),
                     const SizedBox(height: 10),
                     Wrap(
                       spacing: 8,
@@ -145,13 +145,13 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
                     if (widget.type == SavingsType.group) ..._groupFields() else ...[
                       if (widget.type != SavingsType.autoSaveFixed) ...[
                         const SizedBox(height: 22),
-                        const Text('Target amount', style: AppText.sectionTitle),
+                        Text('Target amount', style: AppText.sectionTitle),
                         const SizedBox(height: 10),
                         TextField(
                           controller: _targetController,
                           onChanged: (_) => setState(() {}),
                           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                          style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+                          style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
                           decoration: const InputDecoration(hintText: '0.00'),
                         ),
                       ],
@@ -173,7 +173,7 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
       case SavingsType.locked:
         return [
           const SizedBox(height: 22),
-          const Text('Lock duration', style: AppText.sectionTitle),
+          Text('Lock duration', style: AppText.sectionTitle),
           const SizedBox(height: 10),
           Wrap(
             spacing: 8,
@@ -192,7 +192,7 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
       case SavingsType.roundUp:
         return [
           const SizedBox(height: 22),
-          const Text('Round up to the nearest', style: AppText.sectionTitle),
+          Text('Round up to the nearest', style: AppText.sectionTitle),
           const SizedBox(height: 10),
           Wrap(
             spacing: 8,
@@ -205,13 +205,13 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
       case SavingsType.autoSaveFixed:
         return [
           const SizedBox(height: 22),
-          const Text('Amount per run', style: AppText.sectionTitle),
+          Text('Amount per run', style: AppText.sectionTitle),
           const SizedBox(height: 10),
           TextField(
             controller: _autoSaveAmountController,
             onChanged: (_) => setState(() {}),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+            style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
             decoration: const InputDecoration(hintText: '0.00'),
           ),
           const SizedBox(height: 8),
@@ -235,7 +235,7 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
           const SizedBox(height: 14),
           AppCard(
             padding: const EdgeInsets.all(14),
-            child: const Text(
+            child: Text(
               '12% APY, accrued daily. Funded in USDT. Not NDIC-insured the way a naira bank deposit is.',
               style: TextStyle(fontSize: 11.5, color: AppColors.textSecondary, height: 1.4),
             ),
@@ -249,17 +249,17 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
   List<Widget> _groupFields() {
     return [
       const SizedBox(height: 22),
-      const Text('Contribution per member, per cycle', style: AppText.sectionTitle),
+      Text('Contribution per member, per cycle', style: AppText.sectionTitle),
       const SizedBox(height: 10),
       TextField(
         controller: _groupContributionController,
         onChanged: (_) => setState(() {}),
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+        style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
         decoration: const InputDecoration(hintText: '0.00'),
       ),
       const SizedBox(height: 22),
-      const Text('Invite members', style: AppText.sectionTitle),
+      Text('Invite members', style: AppText.sectionTitle),
       const SizedBox(height: 4),
       Text('Payout order follows the order you select them in — you always go first.', style: AppText.caption),
       const SizedBox(height: 10),
@@ -278,7 +278,7 @@ class _GoalSetupScreenState extends ConsumerState<GoalSetupScreen> {
             child: Row(
               children: [
                 Expanded(child: Text('${a.displayName}  ${a.username}', style: AppText.body)),
-                if (_members.contains(a)) const Icon(AppIcons.check, size: 16, color: AppColors.accent),
+                if (_members.contains(a)) Icon(AppIcons.check, size: 16, color: AppColors.accent),
               ],
             ),
           ),

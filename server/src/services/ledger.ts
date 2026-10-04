@@ -80,6 +80,61 @@ export async function debit(params: {
   }
 }
 
+/**
+ * Debits `fromUserId` and credits `toUserId` inside a single Postgres
+ * transaction — the real-money version of the Flutter app's
+ * `LedgerService.internalTransferOut` (`lib/state/services/
+ * ledger_service.dart:141`), except both sides are now real users
+ * instead of an unbacked demo counterparty. Row-locks the sender's
+ * balance (via the same `FOR UPDATE` pattern as `debit`) before checking
+ * sufficiency, so two concurrent sends from the same user can't both
+ * read a stale balance and overdraw it.
+ */
+export async function transferBetweenUsers(params: {
+  fromUserId: string;
+  toUserId: string;
+  currency: string;
+  amount: number;
+  title: string;
+  subtitle?: string;
+  meta?: Record<string, unknown>;
+}): Promise<void> {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const { rows } = await client.query<{ amount: string }>(
+      `SELECT amount FROM balances WHERE user_id = $1 AND currency = $2 FOR UPDATE`,
+      [params.fromUserId, params.currency]
+    );
+    const have = rows.length ? Number(rows[0].amount) : 0;
+    if (have < params.amount - 1e-9) {
+      await client.query("ROLLBACK");
+      throw new InsufficientFundsError(params.currency, params.amount - have);
+    }
+
+    await upsertBalance(client, params.fromUserId, params.currency, -params.amount);
+    await client.query(
+      `INSERT INTO ledger_entries (user_id, currency, amount, title, subtitle, category, counterparty, meta)
+       VALUES ($1, $2, $3, $4, $5, 'transfer', $6, $7)`,
+      [params.fromUserId, params.currency, -params.amount, params.title, params.subtitle ?? null, params.toUserId, JSON.stringify(params.meta ?? {})]
+    );
+
+    await upsertBalance(client, params.toUserId, params.currency, params.amount);
+    await client.query(
+      `INSERT INTO ledger_entries (user_id, currency, amount, title, subtitle, category, counterparty, meta)
+       VALUES ($1, $2, $3, $4, $5, 'transfer', $6, $7)`,
+      [params.toUserId, params.currency, params.amount, "Received transfer", params.subtitle ?? null, params.fromUserId, JSON.stringify(params.meta ?? {})]
+    );
+
+    await client.query("COMMIT");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 async function upsertBalance(client: PoolClient, userId: string, currency: string, delta: number) {
   await client.query(
     `INSERT INTO balances (user_id, currency, amount) VALUES ($1, $2, $3)
@@ -88,10 +143,10 @@ async function upsertBalance(client: PoolClient, userId: string, currency: strin
   );
 }
 
-export async function getBalances(userId: string): Promise<Record<string, number>> {
+export async function getBalances(userId: string): Promise<Record<string, string>> {
   const { rows } = await pool.query<{ currency: string; amount: string }>(`SELECT currency, amount FROM balances WHERE user_id = $1`, [userId]);
-  const out: Record<string, number> = {};
-  for (const r of rows) out[r.currency] = Number(r.amount);
+  const out: Record<string, string> = {};
+  for (const r of rows) out[r.currency] = r.amount;
   return out;
 }
 

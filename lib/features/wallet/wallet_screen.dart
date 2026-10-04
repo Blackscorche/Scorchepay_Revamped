@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 
 import '../../core/app_icons.dart';
 import '../../core/widgets/app_card.dart';
@@ -61,16 +62,18 @@ class WalletScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(18, 8, 18, 100),
       children: [
         const SizedBox(height: 4),
-        const Text('Wallet', style: AppText.pageTitle),
+        Text('Wallet', style: AppText.pageTitle),
+        const ScorchCompanion(activity: ScorchActivity.wallet, title: 'Everything in its place', message: 'Explore your balances and choose where your money goes.'),
+
         const SizedBox(height: 16),
         TextField(
           readOnly: true,
           onTap: () => _searchCoins(context),
-          style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
           decoration: InputDecoration(
             hintText: 'Search assets',
             prefixIcon:
-                const Icon(AppIcons.search, size: 18, color: AppColors.muted),
+                Icon(AppIcons.search, size: 18, color: AppColors.muted),
           ),
         ),
         const SectionTitle('Unified money vault', topPad: 22),
@@ -92,7 +95,7 @@ class WalletScreen extends StatelessWidget {
                 title: 'Crypto assets',
                 subtitle: '5 holdings',
                 showDivider: false,
-                trailing: const Text(
+                trailing: Text(
                   '\$8,940.20',
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -142,7 +145,7 @@ class WalletScreen extends StatelessWidget {
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(a.label,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.textSecondary)),
@@ -153,7 +156,7 @@ class WalletScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white)),
                               const SizedBox(width: 4),
-                              const Icon(AppIcons.chevronRight,
+                              Icon(AppIcons.chevronRight,
                                   size: 12, color: AppColors.muted),
                             ],
                           ),
@@ -225,7 +228,7 @@ class _FiatBalanceRow extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: AppColors.hairline)),
         ),
         child: Row(
@@ -248,7 +251,7 @@ class _FiatBalanceRow extends StatelessWidget {
                 children: [
                   Text(code, style: AppText.body),
                   const SizedBox(height: 2),
-                  const Text('Fiat balance · tap to deposit',
+                  Text('Fiat balance · tap to deposit',
                       style: AppText.caption),
                 ],
               ),
@@ -257,7 +260,7 @@ class _FiatBalanceRow extends StatelessWidget {
                 style: AppText.tabular
                     .copyWith(fontWeight: FontWeight.w700, fontSize: 13.5)),
             const SizedBox(width: 6),
-            const Icon(AppIcons.chevronRight, size: 14, color: AppColors.muted),
+            Icon(AppIcons.chevronRight, size: 14, color: AppColors.muted),
           ],
         ),
       ),

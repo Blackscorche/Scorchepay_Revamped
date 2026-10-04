@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/widgets/scorch_mascot.dart';
 import '../../../core/app_icons.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../theme/app_colors.dart';
@@ -49,7 +50,9 @@ class ResultScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Spacer(flex: 2),
-                Container(
+                if (success)
+                  const ScorchMascot(activity: ScorchActivity.celebrate, size: 150)
+                else Container(
                   width: 76,
                   height: 76,
                   decoration: BoxDecoration(
@@ -84,14 +87,14 @@ class ResultScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(lines[i].label,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 12.5,
                                         color: AppColors.textSecondary)),
                                 Flexible(
                                   child: Text(
                                     lines[i].value,
                                     textAlign: TextAlign.right,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import 'buttons.dart';
+import 'scorch_mascot.dart';
 import 'detail_header.dart';
 
 /// A full real page (header + empty state, optionally a CTA) for
@@ -47,14 +48,7 @@ class EmptyStatePage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 76,
-                        height: 76,
-                        decoration: const BoxDecoration(
-                            color: AppColors.surface2, shape: BoxShape.circle),
-                        child:
-                            Icon(emptyIcon, size: 30, color: AppColors.muted),
-                      ),
+                      const ScorchMascot(activity: ScorchActivity.explore, size: 140),
                       const SizedBox(height: 18),
                       Text(emptyTitle,
                           style: AppText.cardTitle,

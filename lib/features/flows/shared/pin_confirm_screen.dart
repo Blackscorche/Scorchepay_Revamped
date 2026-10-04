@@ -83,7 +83,7 @@ class _PinConfirmScreenState extends State<PinConfirmScreen> {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(false),
-                    icon: const Icon(AppIcons.chevronLeft,
+                    icon: Icon(AppIcons.chevronLeft,
                         color: AppColors.textPrimary),
                   ),
                 ],
@@ -92,7 +92,7 @@ class _PinConfirmScreenState extends State<PinConfirmScreen> {
               Container(
                 width: 64,
                 height: 64,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     gradient: AppColors.accentGradient, shape: BoxShape.circle),
                 child: const Icon(AppIcons.lock, size: 28, color: Colors.white),
               ),

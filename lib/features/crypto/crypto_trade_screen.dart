@@ -198,17 +198,17 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Choose an asset', style: AppText.detailTitle),
+          Text('Choose an asset', style: AppText.detailTitle),
           const SizedBox(height: 10),
           GestureDetector(
             onTap: () => Navigator.of(ctx).pop(#search),
             behavior: HitTestBehavior.opaque,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 children: [
                   Icon(AppIcons.search, size: 18, color: AppColors.accent),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Text('Search all coins',
                       style: TextStyle(
                           fontSize: 13.5,
@@ -218,7 +218,7 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
               ),
             ),
           ),
-          const Divider(color: AppColors.hairline, height: 18),
+          Divider(color: AppColors.hairline, height: 18),
           for (int i = 0; i < _assets.length; i++)
             _AssetRow(asset: _assets[i], onTap: () => Navigator.of(ctx).pop(i)),
         ],
@@ -279,8 +279,8 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
         task: task,
       ),
     ));
-    if (!mounted) return;
-    final failed = result?.failed ?? true;
+    if (!mounted || result == null) return;
+    final failed = result.failed;
 
     final List<ResultLine> lines;
     final String headline;
@@ -312,7 +312,7 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
         success: !failed,
         headline: headline,
         detailMessage:
-            failed ? (result?.reason ?? 'Something went wrong — try again.') : null,
+            failed ? result.reason : null,
         lines: lines,
         primaryLabel: failed ? 'Try again' : 'Done',
         onPrimary: () => failed
@@ -325,7 +325,7 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
   @override
   Widget build(BuildContext context) {
     if (!_seeded) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.page,
         body: Center(child: CircularProgressIndicator(color: AppColors.accent)),
       );
@@ -350,25 +350,25 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
             _AssetSelector(asset: asset, onTap: () => _pickAsset(isTo: false)),
             if (_isPair) ...[
               const SizedBox(height: 14),
-              const Center(
+              Center(
                   child:
                       Icon(AppIcons.repeat, size: 20, color: AppColors.muted)),
               const SizedBox(height: 14),
-              const Text('To', style: AppText.sectionTitle),
+              Text('To', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               _AssetSelector(
                   asset: _assets[_toAssetIndex],
                   onTap: () => _pickAsset(isTo: true)),
             ],
             const SizedBox(height: 22),
-            const Text('Amount', style: AppText.sectionTitle),
+            Text('Amount', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _amountController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               style:
-                  const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+                  TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
               decoration:
                   InputDecoration(hintText: '0.00', suffixText: asset.symbol),
             ),
@@ -378,7 +378,7 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration:
-                    const BoxDecoration(gradient: AppColors.accentGradient),
+                    BoxDecoration(gradient: AppColors.accentGradient),
                 child: Stack(
                   children: [
                     Positioned(
@@ -429,7 +429,7 @@ class _CryptoTradeScreenState extends ConsumerState<CryptoTradeScreen> {
             ),
             if (!_isPair) ...[
               const SizedBox(height: 22),
-              const Text('Funding source', style: AppText.sectionTitle),
+              Text('Funding source', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               Wrap(
                 spacing: 8,
@@ -479,7 +479,7 @@ class _DemoBadge extends StatelessWidget {
                 const BoxDecoration(color: AppColors.gain, shape: BoxShape.circle),
           ),
           const SizedBox(width: 7),
-          const Text(
+          Text(
             'Live market prices · Simulated trade execution',
             style: TextStyle(
                 fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.accent),
@@ -528,7 +528,7 @@ class _AssetSelector extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(AppIcons.chevronDown, size: 18, color: AppColors.muted),
+            Icon(AppIcons.chevronDown, size: 18, color: AppColors.muted),
           ],
         ),
       ),
@@ -563,7 +563,7 @@ class _AssetRow extends StatelessWidget {
                   TextSpan(text: asset.name, style: AppText.body),
                   TextSpan(
                       text: '  ${asset.symbol}',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.muted,
                           fontWeight: FontWeight.w500,
                           fontSize: 11.5)),

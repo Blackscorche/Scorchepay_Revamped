@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import '../../core/app_icons.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
@@ -70,10 +71,10 @@ class _ConfirmPinScreenState extends State<ConfirmPinScreen> {
                     icon: AppIcons.chevronLeft,
                     onTap: () => Navigator.of(context).pop(),
                   ),
-                  const SizedBox(height: 24),
-                  const Text('Confirm your PIN', style: AppText.pageTitle),
+                  const Align(alignment: Alignment.centerRight, child: ScorchMascot(activity: ScorchActivity.protect, size: 64)),
+                  Text('Confirm your PIN', style: AppText.pageTitle),
                   const SizedBox(height: 8),
-                  const Text('Enter it again to confirm.',
+                  Text('Enter it again to confirm.',
                       style: AppText.bodyMuted),
                   const SizedBox(height: 40),
                   Center(child: PinDots(length: 4, filled: _pin.length)),

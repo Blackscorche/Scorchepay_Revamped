@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../core/app_icons.dart';
+import '../../core/widgets/scorch_mascot.dart';
+import '../../core/widgets/scorchepay_logo.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import 'login_screen.dart';
 import 'signup_screen.dart';
+import '../../data/app_environment.dart';
+import '../live/live_signup_screen.dart';
 
 /// Landing screen after onboarding — branches into sign up or log in.
 class WelcomeScreen extends StatelessWidget {
@@ -19,57 +22,73 @@ class WelcomeScreen extends StatelessWidget {
         children: [
           const Positioned.fill(child: AuthBackdrop()),
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  const Spacer(flex: 3),
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: const BoxDecoration(
-                      gradient: AppColors.accentGradient,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(AppIcons.flame,
-                        size: 34, color: Colors.white),
-                  ),
-                  const SizedBox(height: 18),
-                  const Text('ScorchePay', style: AppText.pageTitle),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Money, sorted. Fiat and crypto in one place.',
-                    textAlign: TextAlign.center,
-                    style: AppText.bodyMuted,
-                  ),
-                  const Spacer(flex: 4),
-                  PrimaryButton(
-                    label: 'Create an account',
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const SignUpScreen()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  SecondaryButton(
-                    label: 'I already have an account',
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const LoginScreen()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 18),
-                  const Text(
-                    "By continuing you agree to ScorchePay's Terms & Privacy Policy",
-                    textAlign: TextAlign.center,
-                    style: AppText.caption,
-                  ),
-                  const SizedBox(height: 12),
-                ],
-              ),
-            ),
+            child: LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                    child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.maxHeight),
+                        child: IntrinsicHeight(
+                            child: Center(
+                                child: ConstrainedBox(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 480),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 24),
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(height: 32),
+                                          const Spacer(flex: 2),
+                                          const SizedBox(width: 170, height: 190,
+                                            child: Stack(alignment: Alignment.bottomCenter, clipBehavior: Clip.none, children: [
+                                              ScorchePayLogo(size: 112),
+                                              Positioned(bottom: 78, child: ScorchMascot(size: 92)),
+                                            ])),
+                                          const SizedBox(height: 18),
+                                          Text('ScorchePay',
+                                              style: AppText.pageTitle),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            'Money, sorted. Fiat and crypto in one place.',
+                                            textAlign: TextAlign.center,
+                                            style: AppText.bodyMuted,
+                                          ),
+                                          const SizedBox(height: 24),
+                                          const Spacer(flex: 2),
+                                          const SizedBox(height: 24),
+                                          PrimaryButton(
+                                            label: 'Create an account',
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (_) => AppEnvironment
+                                                            .isDemo
+                                                        ? const SignUpScreen()
+                                                        : const LiveSignupScreen()),
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(height: 10),
+                                          SecondaryButton(
+                                            label: 'I already have an account',
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        const LoginScreen()),
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(height: 18),
+                                          Text(
+                                            "By continuing you agree to ScorchePay's Terms & Privacy Policy",
+                                            textAlign: TextAlign.center,
+                                            style: AppText.caption,
+                                          ),
+                                          const SizedBox(height: 12),
+                                        ],
+                                      ),
+                                    ))))))),
           ),
         ],
       ),

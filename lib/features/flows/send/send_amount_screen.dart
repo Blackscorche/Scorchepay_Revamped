@@ -55,7 +55,7 @@ class _SendAmountScreenState extends ConsumerState<SendAmountScreen> {
                 children: [
                   IconButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(AppIcons.chevronLeft,
+                      icon: Icon(AppIcons.chevronLeft,
                           color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
                   Text('To ${widget.account.displayName}',
@@ -64,7 +64,7 @@ class _SendAmountScreenState extends ConsumerState<SendAmountScreen> {
               ),
               const SizedBox(height: 22),
               if (state.fiatBalances.length > 1) ...[
-                const Text('Currency', style: AppText.sectionTitle),
+                Text('Currency', style: AppText.sectionTitle),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,
@@ -79,7 +79,7 @@ class _SendAmountScreenState extends ConsumerState<SendAmountScreen> {
                 ),
                 const SizedBox(height: 22),
               ],
-              const Text('Amount', style: AppText.sectionTitle),
+              Text('Amount', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               TextField(
                 controller: _amountController,
@@ -87,7 +87,7 @@ class _SendAmountScreenState extends ConsumerState<SendAmountScreen> {
                 autofocus: true,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textPrimary, fontSize: 13.5),
                 decoration:
                     InputDecoration(hintText: '0.00', suffixText: _currency),
@@ -96,11 +96,11 @@ class _SendAmountScreenState extends ConsumerState<SendAmountScreen> {
               Text('Available: ${balance.toStringAsFixed(2)} $_currency',
                   style: AppText.caption),
               const SizedBox(height: 22),
-              const Text('Note (optional)', style: AppText.sectionTitle),
+              Text('Note (optional)', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               TextField(
                 controller: _noteController,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textPrimary, fontSize: 13.5),
                 decoration:
                     const InputDecoration(hintText: 'What is this for?'),
@@ -148,7 +148,7 @@ class _SendAmountScreenState extends ConsumerState<SendAmountScreen> {
             note: note.isEmpty ? null : note),
       ),
     ));
-    if (!mounted) return;
+    if (!mounted || success == null) return;
 
     if (success == true) {
       await Navigator.of(context).push(MaterialPageRoute(

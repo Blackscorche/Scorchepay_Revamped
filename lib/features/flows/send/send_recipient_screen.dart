@@ -64,10 +64,10 @@ class _SendRecipientScreenState extends State<SendRecipientScreen> {
                 children: [
                   IconButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(AppIcons.chevronLeft,
+                      icon: Icon(AppIcons.chevronLeft,
                           color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
-                  const Text('Send Money', style: AppText.pageTitle),
+                  Text('Send Money', style: AppText.pageTitle),
                 ],
               ),
               const SizedBox(height: 16),
@@ -75,9 +75,9 @@ class _SendRecipientScreenState extends State<SendRecipientScreen> {
                 controller: _controller,
                 onChanged: (_) => setState(() => _notFound = false),
                 onSubmitted: (_) => _searchSubmit(),
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textPrimary, fontSize: 13.5),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: '@username or search contacts',
                   prefixIcon:
                       Icon(AppIcons.user, size: 18, color: AppColors.muted),
@@ -92,7 +92,7 @@ class _SendRecipientScreenState extends State<SendRecipientScreen> {
                         fontWeight: FontWeight.w600)),
               ],
               const SizedBox(height: 18),
-              const Text('CONTACTS',
+              Text('CONTACTS',
                   style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,

@@ -69,7 +69,7 @@ class AppListRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           border: showDivider
-              ? const Border(bottom: BorderSide(color: AppColors.hairline))
+              ? Border(bottom: BorderSide(color: AppColors.hairline))
               : null,
         ),
         child: Row(
@@ -101,7 +101,7 @@ class AppListRow extends StatelessWidget {
             if (trailing != null)
               trailing!
             else if (showChevron && onTap != null)
-              const Icon(AppIcons.chevronRight,
+              Icon(AppIcons.chevronRight,
                   size: 18, color: AppColors.muted),
           ],
         ),

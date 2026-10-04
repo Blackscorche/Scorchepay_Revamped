@@ -72,7 +72,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
               hint: 'Take a photo of restaurant or grocery receipt',
             ),
             const SizedBox(height: 22),
-            const Text('2. Bill Details', style: AppText.sectionTitle),
+            Text('2. Bill Details', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _descController,
@@ -93,8 +93,8 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('3. Tip / Service Charge', style: AppText.sectionTitle),
-                Text('${_tipPercentage.toInt()}% (₦${_tipAmount.toStringAsFixed(2)})', style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.accent)),
+                Text('3. Tip / Service Charge', style: AppText.sectionTitle),
+                Text('${_tipPercentage.toInt()}% (₦${_tipAmount.toStringAsFixed(2)})', style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.accent)),
               ],
             ),
             Slider(
@@ -106,7 +106,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
               onChanged: (v) => setState(() => _tipPercentage = v),
             ),
             const SizedBox(height: 18),
-            const Text('4. Split With Friends', style: AppText.sectionTitle),
+            Text('4. Split With Friends', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -138,10 +138,10 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                         children: [
                           Text(a.displayName, style: AppText.body.copyWith(fontSize: 12.5, fontWeight: FontWeight.w600)),
                           const SizedBox(width: 4),
-                          Text('(${a.username})', style: const TextStyle(fontSize: 11, color: AppColors.muted)),
+                          Text('(${a.username})', style: TextStyle(fontSize: 11, color: AppColors.muted)),
                           if (_selectedFriends.contains(a.username)) ...[
                             const SizedBox(width: 6),
-                            const Icon(AppIcons.check, size: 14, color: AppColors.accent),
+                            Icon(AppIcons.check, size: 14, color: AppColors.accent),
                           ],
                         ],
                       ),
@@ -158,16 +158,16 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Total Bill (incl. tip)', style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
-                      Text('₦${_totalBill.toStringAsFixed(2)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+                      Text('Total Bill (incl. tip)', style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
+                      Text('₦${_totalBill.toStringAsFixed(2)}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
                     ],
                   ),
-                  const Divider(color: AppColors.hairline, height: 20),
+                  Divider(color: AppColors.hairline, height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Each person pays ($_totalPeople people)', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
-                      Text('₦${_perPersonShare.toStringAsFixed(2)}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.accent)),
+                      Text('Each person pays ($_totalPeople people)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+                      Text('₦${_perPersonShare.toStringAsFixed(2)}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.accent)),
                     ],
                   ),
                 ],

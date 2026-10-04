@@ -90,7 +90,7 @@ Future<void> showAppModal(
         Text(title, style: AppText.detailTitle),
         const SizedBox(height: 6),
         Text(message,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 13, height: 1.45, color: AppColors.textSecondary)),
         const SizedBox(height: 20),
         PrimaryButton(

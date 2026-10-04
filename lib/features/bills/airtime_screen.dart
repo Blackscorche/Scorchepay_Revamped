@@ -64,7 +64,7 @@ class _AirtimeScreenState extends State<AirtimeScreen> {
                 title: 'Buy Airtime',
                 subtitle: 'Top up any Nigerian network instantly'),
             const SizedBox(height: 22),
-            const Text('Network', style: AppText.sectionTitle),
+            Text('Network', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -82,21 +82,21 @@ class _AirtimeScreenState extends State<AirtimeScreen> {
               ],
             ),
             const SizedBox(height: 22),
-            const Text('Phone number', style: AppText.sectionTitle),
+            Text('Phone number', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             TextField(
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               style:
-                  const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
-              decoration: const InputDecoration(
+                  TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+              decoration: InputDecoration(
                 hintText: '080X XXX XXXX',
                 prefixIcon:
                     Icon(AppIcons.phone, size: 18, color: AppColors.muted),
               ),
             ),
             const SizedBox(height: 22),
-            const Text('Amount', style: AppText.sectionTitle),
+            Text('Amount', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Wrap(
               spacing: 9,

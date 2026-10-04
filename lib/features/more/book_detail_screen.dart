@@ -125,7 +125,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                     icon: AppIcons.chevronLeft,
                     onTap: () => Navigator.of(context).pop()),
                 const SizedBox(height: 40),
-                const Text('Feature not found', style: AppText.cardTitle),
+                Text('Feature not found', style: AppText.cardTitle),
               ],
             ),
           ),
@@ -144,7 +144,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 padding: const EdgeInsets.fromLTRB(18, 8, 18, 12),
                 child: _Header(book: book),
               ),
-              const Divider(color: AppColors.hairline, height: 1),
+              Divider(color: AppColors.hairline, height: 1),
               Expanded(child: _buildAiChat()),
             ],
           ),
@@ -305,25 +305,25 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Expanded(
                     child: Text('Total Multi-Currency Net Worth',
                         style: TextStyle(fontSize: 12, color: AppColors.textSecondary, fontWeight: FontWeight.w600),
                         overflow: TextOverflow.ellipsis),
                   ),
-                  SizedBox(width: 8),
-                  StatusBadge(label: '7 Currencies Active', tone: BadgeTone.good),
+                  const SizedBox(width: 8),
+                  const StatusBadge(label: '7 Currencies Active', tone: BadgeTone.good),
                 ],
               ),
               const SizedBox(height: 6),
-              const Text('₦16,240,850.00',
+              Text('₦16,240,850.00',
                   style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
                       letterSpacing: -0.5)),
               const SizedBox(height: 2),
-              const Text('≈ \$10,508.00 USD · €9,710.00 EUR · £8,320.00 GBP',
+              Text('≈ \$10,508.00 USD · €9,710.00 EUR · £8,320.00 GBP',
                   style: TextStyle(fontSize: 12, color: AppColors.muted)),
               const SizedBox(height: 18),
               // Prominent Action Bar
@@ -391,24 +391,24 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(c.$2,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
                                     color: AppColors.textPrimary)),
                             Text(c.$6,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 11.5, color: AppColors.muted)),
                           ],
                         ),
                       ),
                       Text(c.$3,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w800,
                               fontSize: 15,
                               color: AppColors.textPrimary)),
                     ],
                   ),
-                  const Divider(color: AppColors.hairline, height: 20),
+                  Divider(color: AppColors.hairline, height: 20),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
@@ -421,7 +421,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                         Expanded(
                           child: Text(
                             c.$5,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 11,
                                 fontFamily: 'monospace',
                                 color: AppColors.textSecondary),
@@ -431,7 +431,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                         GestureDetector(
                           onTap: () => _info(AppIcons.copy, 'Account Details Copied',
                               '${c.$1} account details copied to clipboard.'),
-                          child: const Text('Copy',
+                          child: Text('Copy',
                               style: TextStyle(
                                   fontSize: 11.5,
                                   fontWeight: FontWeight.w700,
@@ -455,7 +455,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             alignment: Alignment.center,
-                            child: const Text('Deposit',
+                            child: Text('Deposit',
                                 style: TextStyle(
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w600,
@@ -474,7 +474,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             alignment: Alignment.center,
-                            child: const Text('Convert',
+                            child: Text('Convert',
                                 style: TextStyle(
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w600,
@@ -493,7 +493,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             alignment: Alignment.center,
-                            child: const Text('Withdraw',
+                            child: Text('Withdraw',
                                 style: TextStyle(
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w700,
@@ -577,21 +577,21 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children: const [
+                children: [
                   Icon(AppIcons.repeat, size: 18, color: AppColors.accent),
                   SizedBox(width: 8),
                   Text('Smart Auto-Debit Engine', style: AppText.cardTitle),
                 ],
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Auto-debit automatically funds your savings goals from your linked card or wallet every payday or chosen schedule.',
                 style: TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.4),
               ),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Expanded(
                     child: Text('Linked Card: •••• 4891 (Access)',
                         style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
@@ -633,7 +633,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(g.name,
-                                      style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AppColors.textPrimary),
+                                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AppColors.textPrimary),
                                       overflow: TextOverflow.ellipsis),
                                   Text('14.5% APY · Auto-saves ₦10k weekly',
                                       style: AppText.caption,
@@ -654,17 +654,17 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('${g.saved} saved', style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
-                      Text('${(g.progress * 100).round()}% of ${g.target}', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                      Text('${g.saved} saved', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                      Text('${(g.progress * 100).round()}% of ${g.target}', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                     ],
                   ),
-                  const Divider(color: AppColors.hairline, height: 20),
+                  Divider(color: AppColors.hairline, height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Row(
-                          children: const [
+                          children: [
                             Icon(AppIcons.repeat, size: 14, color: AppColors.muted),
                             SizedBox(width: 6),
                             Expanded(
@@ -739,14 +739,14 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children: const [
+                children: [
                   Icon(AppIcons.users, size: 18, color: AppColors.accent),
                   SizedBox(width: 8),
                   Text('Rotating Group Pools (Ajo / Esusu)', style: AppText.cardTitle),
                 ],
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Members auto-contribute each cycle. Payouts rotate automatically to the next assigned member with fraud-proof escrow protection.',
                 style: TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.4),
               ),
@@ -772,7 +772,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Expanded(
                       child: Text('Family House Fund',
                           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AppColors.textPrimary),
@@ -787,7 +787,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Expanded(
                       child: Text('₦2.16M of ₦4M · Cycle 3/7',
                           style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
@@ -820,7 +820,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Expanded(
                       child: Text('Squad Trip 2027',
                           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AppColors.textPrimary),
@@ -833,7 +833,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 const SizedBox(height: 10),
                 const AppProgressBar(value: 0.22, color: AppColors.gain),
                 const SizedBox(height: 10),
-                const Text('\$440 of \$2,000 · 3 members', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                Text('\$440 of \$2,000 · 3 members', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
               ],
             ),
           ),
@@ -866,7 +866,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Expanded(
                     child: Text('Financial Health Score',
                         style: AppText.cardTitle,
@@ -879,7 +879,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
               const SizedBox(height: 10),
               const AppProgressBar(value: 0.88),
               const SizedBox(height: 10),
-              const Text('Top 5% saver this month. Savings velocity is +28% higher than last quarter.',
+              Text('Top 5% saver this month. Savings velocity is +28% higher than last quarter.',
                   style: TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.4)),
             ],
           ),
@@ -956,7 +956,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text('Outflow by Category', style: AppText.cardTitle),
                   Text('Breakdown', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                 ],
@@ -1061,7 +1061,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
         // Bottom sticky input bar
         Container(
           padding: const EdgeInsets.fromLTRB(18, 8, 18, 16),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.page,
             border: Border(top: BorderSide(color: AppColors.hairline)),
           ),
@@ -1083,7 +1083,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                         child: Image.file(_attachedAiPhoto!, width: 40, height: 40, fit: BoxFit.cover),
                       ),
                       const SizedBox(width: 10),
-                      const Expanded(
+                      Expanded(
                         child: Text('Receipt / Screenshot attached for AI', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
                       ),
                       GestureDetector(
@@ -1110,7 +1110,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: AppColors.border),
                       ),
-                      child: const Icon(AppIcons.camera, size: 20, color: AppColors.accent),
+                      child: Icon(AppIcons.camera, size: 20, color: AppColors.accent),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -1158,7 +1158,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColors.border),
         ),
-        child: Text(label, style: const TextStyle(fontSize: 11.5, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+        child: Text(label, style: TextStyle(fontSize: 11.5, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
       ),
     );
   }
@@ -1203,26 +1203,26 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Expanded(
                     child: Text('VIP LOYALTY CLUB',
                         style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppColors.accent, letterSpacing: 0.8),
                         overflow: TextOverflow.ellipsis),
                   ),
-                  SizedBox(width: 8),
-                  StatusBadge(label: 'Silver Tier', tone: BadgeTone.good),
+                  const SizedBox(width: 8),
+                  const StatusBadge(label: 'Silver Tier', tone: BadgeTone.good),
                 ],
               ),
               const SizedBox(height: 10),
-              const Text('Silver Tier Member',
+              Text('Silver Tier Member',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
               const SizedBox(height: 6),
-              const Text('Perks: 0.5% Cashback on transfers · 2 free wire payouts monthly · Priority 24/7 VIP Concierge.',
+              Text('Perks: 0.5% Cashback on transfers · 2 free wire payouts monthly · Priority 24/7 VIP Concierge.',
                   style: TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.4)),
               const SizedBox(height: 14),
               const AppProgressBar(value: 0.64),
               const SizedBox(height: 8),
-              const Text('640 / 1,000 Tier Points (360 pts to Gold Tier)', style: TextStyle(fontSize: 11.5, color: AppColors.muted)),
+              Text('640 / 1,000 Tier Points (360 pts to Gold Tier)', style: TextStyle(fontSize: 11.5, color: AppColors.muted)),
             ],
           ),
         ),
@@ -1234,7 +1234,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Expanded(
                     child: Text('5-Day Check-in Streak 🔥',
                         style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5, color: AppColors.textPrimary),
@@ -1291,7 +1291,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text('Available Cashback', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                         SizedBox(height: 2),
                         Text('₦4,120.00', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.gain)),
@@ -1306,8 +1306,8 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                   ),
                 ],
               ),
-              const Divider(color: AppColors.hairline, height: 24),
-              const Text('Your Referral Code', style: AppText.cardTitle),
+              Divider(color: AppColors.hairline, height: 24),
+              Text('Your Referral Code', style: AppText.cardTitle),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -1319,7 +1319,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Text('SCORCHE-3F9K',
                           style: TextStyle(
                               fontFamily: 'monospace',
@@ -1333,7 +1333,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                     GestureDetector(
                       onTap: () => _info(AppIcons.copy, 'Code Copied',
                           'Referral code copied to clipboard.'),
-                      child: const Text('Copy Link',
+                      child: Text('Copy Link',
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -1343,7 +1343,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text('Earn ₦5,000 instant cashback for every friend who joins with your link.',
+              Text('Earn ₦5,000 instant cashback for every friend who joins with your link.',
                   style: TextStyle(fontSize: 11.5, color: AppColors.textSecondary)),
             ],
           ),
@@ -1368,7 +1368,9 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppCard(
+        SizedBox(
+          width: double.infinity,
+          child: AppCard(
           padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 20),
           child: Column(
             children: [
@@ -1406,7 +1408,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                       child: photo == null
                           ? Text(
                               initials,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontWeight: FontWeight.w800,
                                   fontSize: 26,
                                   color: AppColors.textSecondary),
@@ -1433,18 +1435,19 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
               ),
               const SizedBox(height: 14),
               Text(profile.displayName,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,
                       color: AppColors.textPrimary)),
               const SizedBox(height: 3),
               Text('@${profile.username} · ${profile.email}',
-                  style: const TextStyle(fontSize: 12, color: AppColors.muted)),
+                  style: TextStyle(fontSize: 12, color: AppColors.muted)),
               const SizedBox(height: 12),
               StatusBadge(
                   label: '${profile.tier} ${profile.kycStatus}',
                   tone: BadgeTone.good),
             ],
+          ),
           ),
         ),
         const SizedBox(height: 12),
@@ -1511,7 +1514,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Edit Profile', style: AppText.detailTitle),
+          Text('Edit Profile', style: AppText.detailTitle),
           const SizedBox(height: 16),
           TextField(
             controller: nameCtrl,
@@ -1669,14 +1672,14 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
               shape: BoxShape.circle,
               border: Border.all(color: AppColors.borderStrong),
             ),
-            child: const Icon(AppIcons.qr,
+            child: Icon(AppIcons.qr,
                 size: 38, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 16),
-          const Text('Scan a QR code',
+          Text('Scan a QR code',
               style: AppText.cardTitle, textAlign: TextAlign.center),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Point your device camera at any ScorchePay, bank or crypto QR code to send instantly.',
             style: TextStyle(
                 fontSize: 12, color: AppColors.textSecondary, height: 1.45),
@@ -1722,7 +1725,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
           AppCard(
             color: AppColors.accentSoft,
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-            child: const Row(
+            child: Row(
               children: [
                 Icon(AppIcons.check, size: 16, color: AppColors.accent),
                 SizedBox(width: 10),
@@ -1866,12 +1869,12 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             child: const Icon(AppIcons.qr, size: 120, color: Colors.black87),
           ),
           Text('@${profile.username}',
-              style: const TextStyle(
+              style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 16,
                   color: AppColors.textPrimary)),
           const SizedBox(height: 3),
-          const Text('Universal QR · Bank, Wallet & Crypto in one',
+          Text('Universal QR · Bank, Wallet & Crypto in one',
               style: TextStyle(fontSize: 12, color: AppColors.muted)),
           const SizedBox(height: 14),
           Row(
@@ -1955,7 +1958,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 decoration: BoxDecoration(
                     color: AppColors.surface2,
                     borderRadius: BorderRadius.circular(10)),
-                child: const Text(
+                child: Text(
                   '0x8f2a51ce9d47b3a1f0c6e2d9b7a45c31e9c39c31',
                   style: TextStyle(
                       fontSize: 11,
@@ -1997,7 +2000,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Your Personal Payment Link', style: AppText.cardTitle),
+          Text('Your Personal Payment Link', style: AppText.cardTitle),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
@@ -2012,7 +2015,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 Expanded(
                   child: Text(
                     slug,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 12.5,
                         color: AppColors.textPrimary),
@@ -2022,7 +2025,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 GestureDetector(
                   onTap: () => _info(AppIcons.copy, 'Copied',
                       'Payment link copied to clipboard.'),
-                  child: const Text('Copy',
+                  child: Text('Copy',
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -2032,7 +2035,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          const Text(
+          Text(
             'Anyone with this link can pay you any amount from anywhere — cards, Apple Pay or bank transfer.',
             style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
           ),
@@ -2054,10 +2057,10 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 12, color: AppColors.textSecondary)),
           Text(value,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 13.5,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary)),
@@ -2400,7 +2403,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
       builder: (ctx) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Merchant POS Checkout', style: AppText.detailTitle),
+          Text('Merchant POS Checkout', style: AppText.detailTitle),
           const SizedBox(height: 14),
           TextField(
             controller: amtCtrl,
@@ -2414,7 +2417,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             child: const Icon(AppIcons.qr, size: 140, color: Colors.black87),
           ),
           const SizedBox(height: 12),
-          const Text('Scan to pay with ScorchePay, USSD or Bank App', style: TextStyle(fontSize: 12, color: AppColors.muted)),
+          Text('Scan to pay with ScorchePay, USSD or Bank App', style: TextStyle(fontSize: 12, color: AppColors.muted)),
           const SizedBox(height: 16),
           PrimaryButton(
             label: 'Generate New QR',
@@ -2444,7 +2447,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text('From', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                   Text('To', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                 ],
@@ -2455,18 +2458,18 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      FlagChip(flag: CountryFlag.ng),
-                      SizedBox(width: 7),
+                    children: [
+                      const FlagChip(flag: CountryFlag.ng),
+                      const SizedBox(width: 7),
                       Text('NGN', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16, color: AppColors.textPrimary)),
                     ],
                   ),
-                  const Icon(AppIcons.arrowUpRight, size: 16, color: AppColors.muted),
+                  Icon(AppIcons.arrowUpRight, size: 16, color: AppColors.muted),
                   Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      FlagChip(flag: CountryFlag.us),
-                      SizedBox(width: 7),
+                    children: [
+                      const FlagChip(flag: CountryFlag.us),
+                      const SizedBox(width: 7),
                       Text('USD', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16, color: AppColors.textPrimary)),
                     ],
                   ),
@@ -2625,9 +2628,9 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             child: Icon(item.icon, size: 24, color: item.isCredit ? AppColors.gain : AppColors.textPrimary),
           ),
           const SizedBox(height: 12),
-          Text(item.amount, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+          Text(item.amount, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
           const SizedBox(height: 4),
-          Text(item.title, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+          Text(item.title, style: TextStyle(fontSize: 13, color: AppColors.muted)),
           const SizedBox(height: 20),
           _detailRow('Transaction Date', item.subtitle),
           _detailRow('Transaction ID', 'TXN_${item.title.hashCode.abs()}'),
@@ -2711,7 +2714,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Change Security PIN', style: AppText.detailTitle),
+          Text('Change Security PIN', style: AppText.detailTitle),
           const SizedBox(height: 14),
           TextField(
             controller: oldPinCtrl,
@@ -2799,7 +2802,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Live API Key',
+                  Text('Live API Key',
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -2807,7 +2810,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                   GestureDetector(
                     onTap: () => _info(AppIcons.copy, 'Copied',
                         'Live API key copied to clipboard.'),
-                    child: const Text('Copy Key',
+                    child: Text('Copy Key',
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -2848,7 +2851,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Configure Webhooks', style: AppText.detailTitle),
+          Text('Configure Webhooks', style: AppText.detailTitle),
           const SizedBox(height: 14),
           TextField(controller: urlCtrl, decoration: const InputDecoration(labelText: 'Webhook URL Endpoint')),
           const SizedBox(height: 18),
@@ -2878,7 +2881,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
       child: TextField(
         controller: controller,
         onChanged: onChanged,
-        style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+        style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
         decoration: InputDecoration(
           hintText: hint,
           prefixIcon: Icon(icon, size: 18, color: AppColors.muted),
@@ -3029,7 +3032,7 @@ class _StatMini extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 9.5,
                   fontWeight: FontWeight.w700,
                   color: AppColors.muted,
@@ -3067,7 +3070,7 @@ class _ToggleRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         border: showDivider
-            ? const Border(bottom: BorderSide(color: AppColors.hairline))
+            ? Border(bottom: BorderSide(color: AppColors.hairline))
             : null,
       ),
       child: Row(
@@ -3120,7 +3123,7 @@ class _StackAvatars extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   labels[i],
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textSecondary),

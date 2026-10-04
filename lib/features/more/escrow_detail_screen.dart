@@ -127,7 +127,7 @@ class EscrowDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Status',
+                      Text('Status',
                           style: TextStyle(
                               fontSize: 12.5, color: AppColors.textSecondary)),
                       StatusBadge(label: statusLabel, tone: statusTone),
@@ -191,12 +191,12 @@ class EscrowDetailScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 12.5, color: AppColors.textSecondary)),
           Flexible(
             child: Text(value,
                 textAlign: TextAlign.right,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary)),

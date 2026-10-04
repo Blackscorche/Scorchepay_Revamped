@@ -32,10 +32,10 @@ class FundingBreakdownScreen extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () => Navigator.of(context).pop(false),
-                      icon: const Icon(AppIcons.chevronLeft,
+                      icon: Icon(AppIcons.chevronLeft,
                           color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
-                  const Text('Funding breakdown', style: AppText.pageTitle),
+                  Text('Funding breakdown', style: AppText.pageTitle),
                 ],
               ),
               const SizedBox(height: 8),
@@ -73,7 +73,7 @@ class FundingBreakdownScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(leg.currency,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w800,
                                           color: AppColors.textPrimary)),
@@ -97,7 +97,7 @@ class FundingBreakdownScreen extends StatelessWidget {
                                 ],
                               ),
                               Text('${plan.pctOf(leg).toStringAsFixed(0)}%',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.textSecondary)),

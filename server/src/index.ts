@@ -2,26 +2,23 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import { usersRouter } from "./routes/users";
-import { paymentsRouter } from "./routes/payments";
-import { webhooksRouter } from "./routes/webhooks";
+import { requireVerified } from "./middleware/authSafety";
+import { authRouter } from "./routes/auth";
 import { walletRouter } from "./routes/wallet";
+import { transfersRouter } from "./routes/transfers";
 import { errorHandler } from "./middleware/errorHandler";
+import { requireAuth } from "./middleware/requireAuth";
 import { pool } from "./db/pool";
 
 dotenv.config();
 
 const app = express();
 
-// The webhook route needs the raw request body to verify Paystack's
-// signature — it must be mounted with express.raw() *before* the
-// general express.json() parser below, or the signature will never
-// match (JSON.parse + re-stringify doesn't reproduce the exact bytes
-// Paystack signed).
-app.use("/api/webhooks", express.raw({ type: "application/json" }), webhooksRouter);
+// Do not acknowledge unimplemented provider reconciliation as successful.
+app.use("/api/webhooks", (_req,res) => { res.status(503).json({error:"Provider reconciliation is not enabled yet"}); });
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({ origin: process.env.CORS_ORIGIN?.split(",") ?? false }));
+app.use(express.json({limit:"32kb"}));
 
 app.get("/health", async (_req, res) => {
   try {
@@ -32,9 +29,14 @@ app.get("/health", async (_req, res) => {
   }
 });
 
-app.use("/api/users", usersRouter);
-app.use("/api/payments", paymentsRouter);
-app.use("/api/wallet", walletRouter);
+app.use("/api/auth", authRouter);
+// Legacy provider routes are intentionally unavailable until their contract,
+// reconciliation and idempotency release gates have passed.
+const providerUnavailable: express.RequestHandler = (_req,res) => { res.status(503).json({error:'This payment rail is not enabled yet'}); };
+app.use("/api/payments", requireAuth, requireVerified, providerUnavailable);
+app.use("/api/wallet", requireAuth, requireVerified, walletRouter);
+app.use("/api/transfers", requireAuth, requireVerified, transfersRouter);
+app.use("/api/bills", requireAuth, requireVerified, providerUnavailable);
 
 app.use(errorHandler);
 

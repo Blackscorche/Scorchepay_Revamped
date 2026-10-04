@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import '../../app_routes.dart';
+import '../../data/api_client.dart';
+import '../../data/app_environment.dart';
 import '../../core/app_icons.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
@@ -18,6 +21,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _contactController = TextEditingController();
   String _pin = '';
+  bool _busy = false;
+  String? _error;
 
   @override
   void dispose() {
@@ -26,27 +31,47 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onKey(String digit) {
-    if (_pin.length >= 4) return;
-    setState(() => _pin += digit);
-    if (_pin.length == 4) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        if (mounted) {
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
-        }
-      });
+    if (_busy || _pin.length >= 4) return;
+    setState(() {
+      _pin += digit;
+      _error = null;
+    });
+    if (_pin.length == 4) _login();
+  }
+
+  Future<void> _login() async {
+    setState(() => _busy = true);
+    try {
+      if (AppEnvironment.isDemo) {
+        if (_pin != '1234') throw const ApiRequestException('Demo PIN is 1234');
+      } else {
+        await ApiClient.instance
+            .login(username: _contactController.text.trim(), pin: _pin);
+      }
+      if (mounted)
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
+    } catch (error) {
+      if (mounted)
+        setState(() {
+          _error = error.toString();
+          _pin = '';
+        });
+    } finally {
+      if (mounted) setState(() => _busy = false);
     }
   }
 
   void _onBackspace() {
-    if (_pin.isEmpty) return;
+    if (_busy || _pin.isEmpty) return;
     setState(() => _pin = _pin.substring(0, _pin.length - 1));
   }
 
   void _forgotPin() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-          content: Text('Password reset would be sent to your phone/email.')),
+          content: Text(
+              'PIN recovery is not available yet. Please contact support.')),
     );
   }
 
@@ -60,47 +85,62 @@ class _LoginScreenState extends State<LoginScreen> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
-                  const SizedBox(height: 8),
-                  IconCircleButton(
-                    icon: AppIcons.chevronLeft,
-                    onTap: () => Navigator.of(context).pop(),
-                  ),
-                  const SizedBox(height: 24),
-                  const Text('Welcome back', style: AppText.pageTitle),
-                  const SizedBox(height: 8),
-                  const Text('Log in to continue to your money.',
-                      style: AppText.bodyMuted),
-                  const SizedBox(height: 24),
-                  TextField(
-                    controller: _contactController,
-                    decoration: const InputDecoration(
-                        labelText: 'Phone number or email'),
-                  ),
-                  const SizedBox(height: 28),
-                  const Center(
-                      child: Text('Enter your PIN', style: AppText.bodyMuted)),
-                  const SizedBox(height: 16),
-                  Center(child: PinDots(length: 4, filled: _pin.length)),
-                  const SizedBox(height: 8),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: _forgotPin,
-                      child: const Text(
-                        'Forgot PIN?',
-                        style: TextStyle(
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.accent,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      IconCircleButton(
+                        icon: AppIcons.chevronLeft,
+                        onTap: () => Navigator.of(context).pop(),
+                      ),
+                      const Align(
+                          alignment: Alignment.centerRight,
+                          child: ScorchMascot(
+                              activity: ScorchActivity.protect, size: 64)),
+                      Text('Welcome back', style: AppText.pageTitle),
+                      const SizedBox(height: 8),
+                      Text(
+                          AppEnvironment.isDemo
+                              ? 'Explore demo mode. PIN: 1234.'
+                              : 'Log in to continue to your money.',
+                          style: AppText.bodyMuted),
+                      const SizedBox(height: 24),
+                      TextField(
+                        controller: _contactController,
+                        enabled: !_busy,
+                        decoration:
+                            const InputDecoration(labelText: 'Username'),
+                      ),
+                      const SizedBox(height: 28),
+                      Center(
+                          child:
+                              Text('Enter your PIN', style: AppText.bodyMuted)),
+                      const SizedBox(height: 16),
+                      Center(child: PinDots(length: 4, filled: _pin.length)),
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: _forgotPin,
+                          child: Text(
+                            'Forgot PIN?',
+                            style: TextStyle(
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.accent,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      if (_busy) const LinearProgressIndicator(),
+                      if (_error != null)
+                        Text(_error!, style: TextStyle(color: AppColors.loss)),
+                      NumericKeypad(onKey: _onKey, onBackspace: _onBackspace),
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                  NumericKeypad(onKey: _onKey, onBackspace: _onBackspace),
-                  const SizedBox(height: 8),
                 ],
               ),
             ),

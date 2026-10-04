@@ -76,7 +76,7 @@ class DevicePhotoCard extends StatelessWidget {
             if (hasPhoto)
               GestureDetector(
                 onTap: () => _pick(context),
-                child: const Text(
+                child: Text(
                   'Change',
                   style: TextStyle(
                     fontSize: 12,
@@ -163,12 +163,12 @@ class DevicePhotoCard extends StatelessWidget {
                       const SizedBox(height: 10),
                       Text(
                         'Tap to upload photo',
-                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         hint,
-                        style: const TextStyle(fontSize: 11.5, color: AppColors.muted),
+                        style: TextStyle(fontSize: 11.5, color: AppColors.muted),
                         textAlign: TextAlign.center,
                       ),
                     ],

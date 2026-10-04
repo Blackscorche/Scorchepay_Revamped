@@ -85,18 +85,18 @@ class _CoinSearchScreenState extends State<CoinSearchScreen> {
               padding: const EdgeInsets.fromLTRB(18, 16, 18, 8),
               child: TextField(
                 controller: _searchController,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textPrimary, fontSize: 13.5),
                 decoration: InputDecoration(
                   hintText: 'Search by name or symbol',
-                  prefixIcon: const Icon(AppIcons.search,
+                  prefixIcon: Icon(AppIcons.search,
                       size: 18, color: AppColors.muted),
                 ),
               ),
             ),
             Expanded(
               child: _loading
-                  ? const Center(
+                  ? Center(
                       child: CircularProgressIndicator(color: AppColors.accent))
                   : _error != null
                       ? Center(
@@ -155,7 +155,7 @@ class _CoinRow extends StatelessWidget {
                   TextSpan(text: asset.name, style: AppText.body),
                   TextSpan(
                       text: '  ${asset.symbol}',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.muted,
                           fontWeight: FontWeight.w500,
                           fontSize: 11.5)),

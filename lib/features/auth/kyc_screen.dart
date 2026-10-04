@@ -250,7 +250,7 @@ class _KycScreenState extends State<KycScreen> {
                   )
                 : Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Icon(AppIcons.camera, size: 40, color: AppColors.muted),
                       SizedBox(height: 8),
                       Text(
@@ -302,7 +302,7 @@ class _IdTypeTile extends StatelessWidget {
                             ? AppColors.textPrimary
                             : AppColors.textSecondary))),
             if (selected)
-              const Icon(AppIcons.check, size: 17, color: AppColors.accent),
+              Icon(AppIcons.check, size: 17, color: AppColors.accent),
           ],
         ),
       ),
@@ -353,12 +353,12 @@ class _DocTile extends StatelessWidget {
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(AppIcons.camera, size: 26, color: AppColors.muted),
+                    Icon(AppIcons.camera, size: 26, color: AppColors.muted),
                     const SizedBox(height: 9),
                     Text(
                       label,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: AppColors.textSecondary),
+                      style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: AppColors.textSecondary),
                     ),
                   ],
                 ),

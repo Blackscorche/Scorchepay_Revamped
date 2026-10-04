@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import '../../app_routes.dart';
-import '../../core/app_icons.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
 import '../../theme/app_colors.dart';
@@ -8,40 +8,55 @@ import '../../theme/app_text_styles.dart';
 
 class _OnboardingSlide {
   const _OnboardingSlide(
-      {required this.icon, required this.title, required this.body});
-  final IconData icon;
+      {required this.activity,
+      required this.category,
+      required this.title,
+      required this.body});
+  final ScorchActivity activity;
+  final String category;
   final String title;
   final String body;
 }
 
 const _slides = [
   _OnboardingSlide(
-    icon: AppIcons.walletOutline,
-    title: 'One vault for all your money',
-    body: 'Hold NGN, USD, GHS, EUR, GBP and crypto — all in a single balance.',
+    activity: ScorchActivity.wallet,
+    category: 'WALLETS & TRANSFERS',
+    title: 'Your money. More connected.',
+    body:
+        'Keep your currency wallets in view. Send by username, receive money and follow your transactions in one place.',
   ),
   _OnboardingSlide(
-    icon: AppIcons.bolt,
-    title: 'Just tap Pay',
+    activity: ScorchActivity.pay,
+    category: 'SMART PAY & EVERYDAY BILLS',
+    title: 'Make room for everyday life.',
     body:
-        'Smart Pay figures out the best way to fund anything — bills, transfers, merchants — automatically.',
+        'Airtime, data, bills and gift cards. Explore Smart Pay and review how each payment is funded before you confirm.',
   ),
   _OnboardingSlide(
-    icon: AppIcons.coins,
-    title: 'Crypto that behaves like money',
+    activity: ScorchActivity.crypto,
+    category: 'CRYPTO & P2P',
+    title: 'Find your crypto rhythm.',
     body:
-        'Buy, hold and spend BTC, ETH, USDT and more without needing to think like a trader.',
+        'Explore BTC, ETH and USDT. Follow prices, review buy, sell and swap options, and discover P2P offers.',
   ),
   _OnboardingSlide(
-    icon: AppIcons.shield,
-    title: 'Escrow on any payment',
+    activity: ScorchActivity.save,
+    category: 'SAVINGS & GROUP GOALS',
+    title: 'Small steps. Bigger plans.',
     body:
-        'Turn any transaction into a protected escrow — freelance work, marketplace deals, property.',
+        'Give your next goal a home. Set a savings target, follow your progress or build toward something together.',
+  ),
+  _OnboardingSlide(
+    activity: ScorchActivity.protect,
+    category: 'ESCROW & DEALS',
+    title: 'Agree first. Release with care.',
+    body:
+        'Set the terms of a deal, follow delivery and review the release of funds with ScorchePay’s escrow tools.',
   ),
 ];
 
-/// Four-slide carousel introducing the app's core pillars, reached right
-/// after the splash screen.
+/// A feature-led introduction with a matching Scorch scene for each pillar.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -77,10 +92,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.topLeft,
                     child: TextButton(
                       onPressed: _finish,
-                      child: const Text(
+                      child: Text(
                         'Skip',
                         style: TextStyle(
                           fontSize: 13.5,
@@ -99,34 +114,52 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         final slide = _slides[i];
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: const BoxDecoration(
-                                  color: AppColors.accentSoft,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(slide.icon,
-                                    size: 52, color: AppColors.accent),
-                              ),
-                              const SizedBox(height: 28),
-                              Text(
-                                slide.title,
-                                textAlign: TextAlign.center,
-                                style: AppText.pageTitle.copyWith(fontSize: 22),
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                slide.body,
-                                textAlign: TextAlign.center,
-                                style: AppText.bodyMuted
-                                    .copyWith(fontSize: 13.5, height: 1.4),
-                              ),
-                            ],
-                          ),
+                          child: LayoutBuilder(
+                              builder: (context, constraints) =>
+                                  SingleChildScrollView(
+                                      child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                              minHeight: constraints.maxHeight),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ScorchMascot(
+                                                activity: slide.activity,
+                                                size: MediaQuery.sizeOf(context)
+                                                            .height <
+                                                        700
+                                                    ? 180
+                                                    : 240,
+                                                animate: i == _page,
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Text(slide.category,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 10.5,
+                                                      letterSpacing: 1.4,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: AppColors.accent)),
+                                              const SizedBox(height: 12),
+                                              Text(
+                                                slide.title,
+                                                textAlign: TextAlign.center,
+                                                style: AppText.pageTitle
+                                                    .copyWith(fontSize: 22),
+                                              ),
+                                              const SizedBox(height: 12),
+                                              Text(
+                                                slide.body,
+                                                textAlign: TextAlign.center,
+                                                style: AppText.bodyMuted
+                                                    .copyWith(
+                                                        fontSize: 13.5,
+                                                        height: 1.4),
+                                              ),
+                                            ],
+                                          )))),
                         );
                       },
                     ),
@@ -153,6 +186,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onPressed: () {
                       if (isLast) {
                         _finish();
+                      } else if (MediaQuery.disableAnimationsOf(context)) {
+                        _controller.jumpToPage(_page + 1);
                       } else {
                         _controller.nextPage(
                           duration: const Duration(milliseconds: 280),

@@ -53,18 +53,19 @@ class _SavingsGoalDetailScreenState
             onPressed: () async {
               final amt = double.tryParse(amtCtrl.text.trim()) ?? 0;
               if (amt > 0) {
-                await ref
+                final result = await ref
                     .read(appStateProvider.notifier)
                     .contributeSavings(goal.id, amt);
                 if (ctx.mounted) Navigator.of(ctx).pop();
                 if (mounted) {
                   showAppModal(
                     context,
-                    icon: AppIcons.check,
-                    iconColor: AppColors.gain,
-                    title: 'Deposit Successful',
-                    message:
-                        'Added ${amt.toStringAsFixed(2)} ${goal.currency} to "${goal.name}".',
+                    icon: result.isSuccess ? AppIcons.check : AppIcons.close,
+                    iconColor: result.isSuccess ? AppColors.gain : AppColors.loss,
+                    title: result.isSuccess ? 'Deposit Successful' : 'Deposit Failed',
+                    message: result.isSuccess
+                        ? 'Added ${amt.toStringAsFixed(2)} ${goal.currency} to "${goal.name}".'
+                        : (result.message ?? 'Nothing was added to this goal.'),
                   );
                 }
               }
@@ -150,7 +151,7 @@ class _SavingsGoalDetailScreenState
                     icon: AppIcons.chevronLeft,
                     onTap: () => Navigator.of(context).pop()),
                 const SizedBox(height: 40),
-                const Text('Goal not found', style: AppText.cardTitle),
+                Text('Goal not found', style: AppText.cardTitle),
               ],
             ),
           ),
@@ -191,14 +192,14 @@ class _SavingsGoalDetailScreenState
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Total Saved',
+                          Text('Total Saved',
                               style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.textSecondary)),
                           const SizedBox(height: 2),
                           Text(
                             '${goal.current.toStringAsFixed(2)} ${goal.currency}',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.textPrimary),
@@ -227,11 +228,11 @@ class _SavingsGoalDetailScreenState
                       ],
                     ),
                   if (goal.apy != null) ...[
-                    const Divider(color: AppColors.hairline, height: 24),
+                    Divider(color: AppColors.hairline, height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Annual Percentage Yield (APY)',
+                        Text('Annual Percentage Yield (APY)',
                             style: TextStyle(
                                 fontSize: 12, color: AppColors.textSecondary)),
                         Text('${(goal.apy! * 100).toInt()}% APY',

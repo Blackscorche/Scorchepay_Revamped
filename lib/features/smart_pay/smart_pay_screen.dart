@@ -114,14 +114,14 @@ class SmartPayScreen extends ConsumerWidget {
                     icon: AppIcons.chevronLeft,
                     onTap: () => Navigator.of(context).pop()),
                 const SizedBox(width: 12),
-                const Icon(AppIcons.bolt,
+                Icon(AppIcons.bolt,
                     size: 22, color: AppColors.textPrimary),
                 const SizedBox(width: 8),
-                const Text('Smart Pay', style: AppText.pageTitle),
+                Text('Smart Pay', style: AppText.pageTitle),
               ],
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               "Don't think about currencies. Just tap Pay — ScorchePay figures out how to fund it.",
               style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
             ),
@@ -148,7 +148,7 @@ class SmartPayScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text('MTN Data · 10GB Monthly Plan',
+                  Text('MTN Data · 10GB Monthly Plan',
                       style: TextStyle(fontSize: 13, color: AppColors.muted)),
                   const SizedBox(height: 20),
                   GestureDetector(
@@ -158,7 +158,7 @@ class SmartPayScreen extends ConsumerWidget {
                       alignment: Alignment.centerLeft,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text('Auto funding breakdown',
                               style: TextStyle(
                                   fontSize: 13,
@@ -222,7 +222,7 @@ class SmartPayScreen extends ConsumerWidget {
                             const SizedBox(width: 6),
                             Text(
                                 '${plan.pctOf(plan.legs[i]).toStringAsFixed(0)}% ${plan.legs[i].currency}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                     fontWeight: FontWeight.w500)),
@@ -335,7 +335,7 @@ class SmartPayScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Supports NGN · GHS · USD · BTC · ETH · USDT & more',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 11, color: AppColors.textSecondary),

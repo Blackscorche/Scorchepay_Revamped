@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
 import '../../core/app_icons.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
@@ -78,8 +79,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     icon: AppIcons.chevronLeft,
                     onTap: () => Navigator.of(context).pop(),
                   ),
-                  const SizedBox(height: 24),
-                  const Text('Verify your number', style: AppText.pageTitle),
+                  const Align(alignment: Alignment.centerRight, child: ScorchMascot(activity: ScorchActivity.protect, size: 64)),
+                  Text('Verify your number', style: AppText.pageTitle),
                   const SizedBox(height: 8),
                   Text(
                     'Enter the 6-digit code we sent to ${widget.contact}',
@@ -99,7 +100,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             style: AppText.caption)
                         : GestureDetector(
                             onTap: _startTimer,
-                            child: const Text(
+                            child: Text(
                               'Resend code',
                               style: TextStyle(
                                 fontSize: 12.5,

@@ -15,6 +15,7 @@ class AppIcons {
   static const IconData walletOutline = Icons.account_balance_wallet_outlined;
   static const IconData bolt = Icons.bolt_rounded;
   static const IconData coins = Icons.monetization_on_outlined;
+  static const IconData bitcoin = Icons.currency_bitcoin_rounded;
   static const IconData grid = Icons.grid_view_rounded;
   static const IconData bell = Icons.notifications_none_rounded;
   static const IconData user = Icons.person_outline_rounded;
@@ -80,4 +81,7 @@ class AppIcons {
   static const IconData image = Icons.image_outlined;
   static const IconData trash = Icons.delete_outline_rounded;
   static const IconData close = Icons.close_rounded;
+  static const IconData sun = Icons.light_mode_rounded;
+  static const IconData moon = Icons.dark_mode_rounded;
+  static const IconData contrast = Icons.contrast_rounded;
 }

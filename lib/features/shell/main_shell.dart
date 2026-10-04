@@ -70,7 +70,10 @@ class _MainShellState extends ConsumerState<MainShell> {
       extendBody: true,
       body: SafeArea(
         bottom: false,
-        child: IndexedStack(index: _index, children: _screens),
+        child: IndexedStack(index: _index, children: [
+          for (var i = 0; i < _screens.length; i++)
+            TickerMode(enabled: i == _index, child: _screens[i]),
+        ]),
       ),
       bottomNavigationBar: _BottomBar(
         index: _index,
@@ -99,7 +102,7 @@ class _BottomBar extends StatelessWidget {
         height: 68,
         padding: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
-          color: const Color(0xF0121214),
+          color: AppColors.surface2,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: AppColors.hairline),
           boxShadow: [

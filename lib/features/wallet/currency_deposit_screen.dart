@@ -76,7 +76,7 @@ class CurrencyDepositScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(18),
                 decoration:
-                    const BoxDecoration(gradient: AppColors.accentGradient),
+                    BoxDecoration(gradient: AppColors.accentGradient),
                 child: Stack(
                   children: [
                     Positioned(
@@ -114,7 +114,7 @@ class CurrencyDepositScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 22),
-            const Text('Your deposit details', style: AppText.sectionTitle),
+            Text('Your deposit details', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             AppCard(
               padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
@@ -157,7 +157,7 @@ class CurrencyDepositScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 18),
-            const Text(
+            Text(
               'Funds sent to this account are converted at the live rate and added to your unified vault automatically.',
               style: AppText.caption,
             ),
@@ -174,13 +174,13 @@ class CurrencyDepositScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 12.5, color: AppColors.textSecondary)),
           Flexible(
             child: Text(
               value,
               textAlign: TextAlign.right,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary),

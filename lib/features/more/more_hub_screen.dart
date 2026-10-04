@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/scorch_mascot.dart';
+import 'package:flutter/foundation.dart';
+import '../exchange/exchange_workspace_screen.dart';
 
 import '../../core/app_icons.dart';
 import '../../core/widgets/app_card.dart';
 import '../../core/widgets/icon_action_button.dart';
 import '../../data/mock_data.dart';
-import '../../data/models.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../flows/escrow/escrow_list_screen.dart';
 import '../flows/send/send_recipient_screen.dart';
+import 'appearance_screen.dart';
 import 'book_detail_screen.dart';
 
 /// More hub — every feature from the product roadmap with live search filter.
@@ -31,10 +34,23 @@ class _MoreHubScreenState extends State<MoreHubScreen> {
 
   static Widget _openBook(String id) {
     switch (id) {
+      case 'gift_exchange':
+        return const ExchangeWorkspaceScreen(
+            workspace: ExchangeWorkspace.giftCards);
+      case 'p2p_market':
+        return const ExchangeWorkspaceScreen(workspace: ExchangeWorkspace.p2p);
+      case 'merchant_exchange':
+        return const ExchangeWorkspaceScreen(
+            workspace: ExchangeWorkspace.merchant);
+      case 'admin_exchange':
+        return const ExchangeWorkspaceScreen(
+            workspace: ExchangeWorkspace.admin);
       case 'send':
         return const SendRecipientScreen();
       case 'escrow':
         return const EscrowListScreen();
+      case 'appearance':
+        return const AppearanceScreen();
       default:
         return BookDetailScreen(bookId: id);
     }
@@ -42,7 +58,11 @@ class _MoreHubScreenState extends State<MoreHubScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final allBooks = MockData.books;
+    final allBooks = MockData.books
+        .where((book) =>
+            kDebugMode ||
+            !{'merchant_exchange', 'admin_exchange'}.contains(book.id))
+        .toList();
     final filtered = _searchQuery.isEmpty
         ? allBooks
         : allBooks.where((b) {
@@ -61,23 +81,25 @@ class _MoreHubScreenState extends State<MoreHubScreen> {
       padding: const EdgeInsets.fromLTRB(18, 8, 18, 100),
       children: [
         const SizedBox(height: 4),
-        const Text('More', style: AppText.pageTitle),
+        Text('More', style: AppText.pageTitle),
+        const ScorchCompanion(activity: ScorchActivity.explore, title: 'Find your next move', message: 'Savings, payments and everyday tools, all together.'),
+
         const SizedBox(height: 16),
         TextField(
           controller: _searchController,
           onChanged: (v) => setState(() => _searchQuery = v.trim()),
-          style: const TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 13.5),
           decoration: InputDecoration(
             hintText: 'Search ScorchePay features...',
-            prefixIcon:
-                const Icon(AppIcons.search, size: 18, color: AppColors.muted),
+            prefixIcon: Icon(AppIcons.search, size: 18, color: AppColors.muted),
             suffixIcon: _searchQuery.isNotEmpty
                 ? GestureDetector(
                     onTap: () {
                       _searchController.clear();
                       setState(() => _searchQuery = '');
                     },
-                    child: const Icon(AppIcons.trash, size: 16, color: AppColors.muted),
+                    child:
+                        Icon(AppIcons.trash, size: 16, color: AppColors.muted),
                   )
                 : null,
           ),
@@ -88,7 +110,7 @@ class _MoreHubScreenState extends State<MoreHubScreen> {
             child: Center(
               child: Column(
                 children: [
-                  const Icon(AppIcons.search, size: 36, color: AppColors.muted),
+                  Icon(AppIcons.search, size: 36, color: AppColors.muted),
                   const SizedBox(height: 12),
                   Text('No features found for "$_searchQuery"',
                       style: AppText.bodyMuted),
@@ -99,33 +121,42 @@ class _MoreHubScreenState extends State<MoreHubScreen> {
         else
           for (final group in groups) ...[
             Padding(
-              padding: const EdgeInsets.only(top: 14, bottom: 6, left: 2, right: 2),
+              padding:
+                  const EdgeInsets.only(top: 14, bottom: 22, left: 2, right: 2),
               child: Text(
                 group.toUpperCase(),
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: AppColors.muted,
                     letterSpacing: 0.7),
               ),
             ),
-            GridView.count(
-              crossAxisCount: 4,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 4,
-              crossAxisSpacing: 0,
-              childAspectRatio: 1.05,
-              children: [
-                for (final book in filtered.where((b) => b.group == group))
-                  IconActionButton(
-                    icon: book.icon,
-                    label: book.title,
-                    size: 48,
-                    onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => _openBook(book.id))),
-                  ),
-              ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                const cols = 4;
+                const hGap = 4.0;
+                final itemWidth =
+                    (constraints.maxWidth - hGap * (cols - 1)) / cols;
+                return Wrap(
+                  spacing: hGap,
+                  runSpacing: 14,
+                  children: [
+                    for (final book in filtered.where((b) => b.group == group))
+                      SizedBox(
+                        width: itemWidth,
+                        child: IconActionButton(
+                          icon: book.icon,
+                          label: book.title,
+                          size: 48,
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => _openBook(book.id))),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
           ],
         AppCard(
@@ -134,7 +165,7 @@ class _MoreHubScreenState extends State<MoreHubScreen> {
           color: AppColors.accentSoft,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Row(
                 children: [
                   Icon(AppIcons.flame, size: 16, color: AppColors.accent),

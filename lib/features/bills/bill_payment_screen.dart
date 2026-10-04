@@ -88,7 +88,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
                 title: widget.title,
                 subtitle: widget.subtitle),
             const SizedBox(height: 22),
-            const Text('Provider', style: AppText.sectionTitle),
+            Text('Provider', style: AppText.sectionTitle),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -111,7 +111,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
             ),
             const SizedBox(height: 22),
             if (widget.packages != null) ...[
-              const Text('Choose a package', style: AppText.sectionTitle),
+              Text('Choose a package', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               for (int i = 0; i < widget.packages!.length; i++)
                 _PackageRow(
@@ -119,7 +119,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
                     selected: i == _package,
                     onTap: () => setState(() => _package = i)),
             ] else ...[
-              const Text('Amount', style: AppText.sectionTitle),
+              Text('Amount', style: AppText.sectionTitle),
               const SizedBox(height: 10),
               TextField(
                 controller: _amountController,

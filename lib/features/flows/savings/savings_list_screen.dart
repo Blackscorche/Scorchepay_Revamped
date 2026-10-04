@@ -30,9 +30,9 @@ class SavingsListScreen extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
+                  IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(AppIcons.chevronLeft, color: AppColors.textPrimary)),
                   const SizedBox(width: 4),
-                  const Text('Savings', style: AppText.pageTitle),
+                  Text('Savings', style: AppText.pageTitle),
                 ],
               ),
               const SizedBox(height: 14),
@@ -64,7 +64,7 @@ class SavingsListScreen extends ConsumerWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(child: Text(g.name, style: AppText.body.copyWith(fontWeight: FontWeight.w700))),
-                                      Text(_typeLabel(g.type), style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.muted)),
+                                      Text(_typeLabel(g.type), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.muted)),
                                     ],
                                   ),
                                   const SizedBox(height: 9),

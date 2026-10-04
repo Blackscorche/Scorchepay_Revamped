@@ -47,6 +47,10 @@ class AppCard extends StatelessWidget {
 /// light seam along the top edge, and a cluster of ember-tinted ring
 /// circles bleeding off the top-right corner. This is the one card per
 /// screen allowed a bit of visual weight; everything else stays flat.
+/// Its gradient flips with the app theme (see [AppColors.heroGradient]),
+/// so its own content should read against either variant — use the
+/// regular theme-aware AppColors.* text tokens inside it, not fixed
+/// light/dark ones.
 class GlassHeroCard extends StatelessWidget {
   const GlassHeroCard({super.key, required this.child, this.padding});
 
@@ -61,11 +65,7 @@ class GlassHeroCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(color: AppColors.borderStrong),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF1A1210), Color(0xFF121012), Color(0xFF101012)],
-        ),
+        gradient: AppColors.heroGradient,
       ),
       child: Stack(
         children: [
@@ -80,7 +80,7 @@ class GlassHeroCard extends StatelessWidget {
           Positioned(
               bottom: -90,
               left: -70,
-              child: _ring(190, Colors.white.withOpacity(0.07), width: 26)),
+              child: _ring(190, AppColors.textPrimary.withOpacity(0.07), width: 26)),
           Positioned(
             top: 0,
             left: 20,
@@ -89,9 +89,9 @@ class GlassHeroCard extends StatelessWidget {
               height: 1,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Colors.white.withOpacity(0),
-                  Colors.white.withOpacity(0.18),
-                  Colors.white.withOpacity(0),
+                  AppColors.textPrimary.withOpacity(0),
+                  AppColors.textPrimary.withOpacity(0.18),
+                  AppColors.textPrimary.withOpacity(0),
                 ]),
               ),
             ),

@@ -148,13 +148,13 @@ class _SavingsGoalDetailScreenState extends State<SavingsGoalDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('$_saved saved',
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary)),
                       Text(
                         '${(_progress * 100).round()}% of ${widget.goal.target}',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12.5, color: AppColors.textSecondary),
                       ),
                     ],

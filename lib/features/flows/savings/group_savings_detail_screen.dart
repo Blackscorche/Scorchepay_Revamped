@@ -52,7 +52,7 @@ class _GroupSavingsDetailScreenState
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Invite Member', style: AppText.detailTitle),
+          Text('Invite Member', style: AppText.detailTitle),
           const SizedBox(height: 12),
           TextField(
             controller: userCtrl,
@@ -136,14 +136,14 @@ class _GroupSavingsDetailScreenState
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Current Pool',
+                          Text('Current Pool',
                               style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.textSecondary)),
                           const SizedBox(height: 2),
                           Text(
                             '${goal.current.toStringAsFixed(2)} ${goal.currency}',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.textPrimary),
@@ -187,7 +187,7 @@ class _GroupSavingsDetailScreenState
               ],
             ),
             const SizedBox(height: 24),
-            const Text('Member Roster & Payout Rotation',
+            Text('Member Roster & Payout Rotation',
                 style: AppText.sectionTitle),
             const SizedBox(height: 10),
             AppCard(
@@ -210,7 +210,7 @@ class _GroupSavingsDetailScreenState
                             alignment: Alignment.center,
                             child: Text(
                               '${i + 1}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.textPrimary),
