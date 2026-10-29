@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../models/connected_wallet.dart';
 import '../services/wallet_service.dart';
 import '../services/wallet_store.dart';
+import 'api_providers.dart';
 import 'app_state_notifier.dart';
 
 /// The signed-in account's connected wallets and which one is current.

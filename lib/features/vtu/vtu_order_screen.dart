@@ -12,6 +12,7 @@ import '../../core/widgets/choice_chip.dart';
 import '../../core/widgets/detail_header.dart';
 import '../../state/models/vtu.dart';
 import '../../state/providers/vtu_providers.dart';
+import '../../state/providers/api_providers.dart';
 import '../../state/providers/wallets_provider.dart';
 import '../../state/services/vtu_api.dart';
 import '../../theme/app_colors.dart';

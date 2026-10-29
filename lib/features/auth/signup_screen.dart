@@ -48,7 +48,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen>
   Future<void> _onContinue() async {
     final contact = _contactController.text.trim();
     final result = await runAction(
-        () => ref.read(backendServiceProvider).requestSignUpCode(contact));
+        () => ref.read(backendProvider.notifier).requestSignUpCode(contact));
     if (!mounted || !result.hasValue) return;
     Navigator.of(context).push(
       MaterialPageRoute(

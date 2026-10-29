@@ -12,6 +12,7 @@ import '../../core/widgets/buttons.dart';
 import '../../core/widgets/status_badge.dart';
 import '../../state/models/vtu.dart';
 import '../../state/providers/vtu_providers.dart';
+import '../../state/providers/api_providers.dart';
 import '../../state/providers/wallets_provider.dart';
 import '../../state/services/mock_lightning.dart';
 import '../../state/services/mock_vtu_api.dart';
@@ -204,10 +205,9 @@ class _OrderStatusScreenState extends ConsumerState<OrderStatusScreen>
                 ? null
                 : () => payOrder(order, wallet),
           ),
-          if (kDebugMode && api is MockVtuApi)
+          if (kDebugMode && api.features.simulatePayments)
             TextButton(
-              onPressed:
-                  actionRunning ? null : () => simulatePayment(order, api),
+              onPressed: actionRunning ? null : () => simulatePayment(order),
               child: const Text('Simulate payment (debug)'),
             ),
         ],

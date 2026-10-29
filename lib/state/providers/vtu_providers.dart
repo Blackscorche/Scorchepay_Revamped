@@ -1,36 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/vtu.dart';
-import '../services/backend_service.dart';
-import '../services/mock_vtu_api.dart';
 import '../services/vtu_api.dart';
+import 'api_providers.dart';
 import 'app_state_notifier.dart';
 
-/// The VTU backend, acting as the signed-in user. Rebuilt when the
-/// session or the mock scenario changes, which in turn refreshes
-/// everything fetched through it (catalog, limits, orders).
-final vtuApiProvider = Provider<VtuApi>((ref) {
-  final api = MockVtuApi(
-    backend: ref.watch(backendServiceProvider),
-    token: ref.watch(appStateProvider.select((s) => s.valueOrNull?.token)),
-    scenario: ref.watch(mockScenarioProvider),
-  );
-  ref.onDispose(api.dispose);
-  return api;
-});
 
-/// Debug builds only: how [MockVtuApi] behaves (see the dashboard's debug
-/// menu). Change it through [MockScenarioNotifier.select].
-final mockScenarioProvider =
-    NotifierProvider<MockScenarioNotifier, MockScenario>(
-        MockScenarioNotifier.new);
-
-class MockScenarioNotifier extends Notifier<MockScenario> {
-  @override
-  MockScenario build() => MockScenario.success;
-
-  void select(MockScenario scenario) => state = scenario;
-}
 
 /// The country's billers and plans (Nigeria only for now). Kept for the
 /// session; `ref.invalidate` it to retry after an error.

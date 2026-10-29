@@ -12,3 +12,5 @@ build/
 # Built by `dart run tools/build_passkeys_bundle.dart` (see docs/PASSKEYS.md)
 /web/passkeys_bundle.js
 /web/passkeys_bundle.version
+.agents
+.claude

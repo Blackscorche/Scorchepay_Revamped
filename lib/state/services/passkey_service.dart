@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:passkeys/authenticator.dart';
 import 'package:passkeys/types.dart';
-import 'backend_service.dart';
+import 'vtu_api.dart';
 
 /// Talks to the OS passkey APIs (Credential Manager on Android,
 /// AuthenticationServices on iOS/macOS). The backend is the relying
@@ -10,20 +10,6 @@ import 'backend_service.dart';
 /// they return.
 final passkeyAuthenticatorProvider =
     Provider<PasskeyAuthenticator>((ref) => PasskeyAuthenticator());
-
-/// Whether to offer passkeys: a supported platform and a backend with a
-/// relying party set up (see `BackendService.passkeyRpId`).
-///
-/// Web uses the browser's WebAuthn API through `web/passkeys_bundle.js`.
-/// Windows is supported by the package too but isn't set up here yet.
-final passkeysAvailableProvider = Provider<bool>((ref) {
-  final platformSupported = kIsWeb ||
-      defaultTargetPlatform == TargetPlatform.android ||
-      defaultTargetPlatform == TargetPlatform.iOS ||
-      defaultTargetPlatform == TargetPlatform.macOS;
-  return platformSupported &&
-      ref.watch(backendServiceProvider).passkeysConfigured;
-});
 
 /// Runs a passkey OS call, turning the package's exceptions into an
 /// [AuthException] with a user-facing message.

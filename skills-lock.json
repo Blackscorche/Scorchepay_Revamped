@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "alby-hub": {
+      "source": "getAlby/hub-skill",
+      "sourceType": "github",
+      "skillPath": "alby-hub/SKILL.md",
+      "computedHash": "e09ccd29d155790323d7f6f2443beee47ca3f17984c63a2935423da8d5ef5fa5"
+    }
+  }
+}

@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scorchepay/state/services/backend_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/kyc.dart';
-import '../services/backend_service.dart';
+import 'api_providers.dart';
 import 'app_state_notifier.dart';
 import '../services/shared_prefs_keys.dart';
 
@@ -118,7 +119,7 @@ class UserProfileNotifier extends StateNotifier<UserProfile> {
     if (identityChanged &&
         _ref.read(appStateProvider).requireValue.isLoggedIn) {
       await _ref
-          .read(appStateProvider.notifier)
+          .read(backendProvider.notifier)
           .updateUserDetails(username: username, displayName: displayName);
     }
   }
@@ -142,5 +143,5 @@ final profilePhotoProvider = FutureProvider<Uint8List?>((ref) async {
   final url = ref.watch(
       appStateProvider.select((s) => s.valueOrNull?.photoUrl));
   if (url == null) return null;
-  return ref.read(backendServiceProvider).loadProfilePhoto(url);
+  return ref.read(vtuApiProvider).loadPhoto(url);
 });

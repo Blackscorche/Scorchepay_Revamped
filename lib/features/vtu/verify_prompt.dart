@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/app_icons.dart';
 import '../../core/async_action.dart';
@@ -7,7 +8,7 @@ import '../../core/formatters.dart';
 import '../../core/widgets/app_modal.dart';
 import '../../core/widgets/buttons.dart';
 import '../../state/models/vtu.dart';
-import '../../state/providers/app_state_notifier.dart';
+import '../../state/services/backend_service.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 
@@ -37,7 +38,10 @@ class _VerifyPromptState extends ConsumerState<_VerifyPrompt>
     with AsyncActionMixin {
   Future<void> _verify() async {
     final result = await runAction(
-        () => ref.read(appStateProvider.notifier).verifyIdentity());
+        () => ref.read(backendProvider.notifier).verifyIdentity(
+            // The provider's hosted page, inside the app.
+            openUrl: (url) =>
+                launchUrl(url, mode: LaunchMode.inAppBrowserView)));
     if (mounted && result.hasValue) Navigator.of(context).pop(true);
   }
 
@@ -68,7 +72,7 @@ class _VerifyPromptState extends ConsumerState<_VerifyPrompt>
                 [
                   widget.reason,
                   if (next != null)
-                    'Verify once with myPass to raise it to '
+                    'Verify your identity once with Mono to raise it to '
                         '${formatFiat(next.perOrder, next.currency)} per order and '
                         '${formatFiat(next.daily, next.currency)} a day. You share '
                         'verified details; ScorchePay stores no ID documents.',
@@ -83,7 +87,7 @@ class _VerifyPromptState extends ConsumerState<_VerifyPrompt>
           spacing: 8,
           children: [
             PrimaryButton(
-              label: 'Verify with myPass',
+              label: 'Verify with Mono',
               icon: AppIcons.shieldCheck,
               loading: actionRunning,
               onPressed: _verify,

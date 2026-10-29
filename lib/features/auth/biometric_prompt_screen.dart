@@ -5,8 +5,8 @@ import '../../core/async_action.dart';
 import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
 import '../../state/models/sign_up_draft.dart';
-import '../../state/providers/app_state_notifier.dart';
-import '../../state/services/passkey_service.dart';
+import '../../state/providers/api_providers.dart';
+import '../../state/services/backend_service.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 
@@ -26,13 +26,13 @@ class BiometricPromptScreen extends ConsumerStatefulWidget {
 
 class _BiometricPromptScreenState extends ConsumerState<BiometricPromptScreen>
     with AsyncActionMixin {
-  Future<void> _proceed({required bool addPasskey}) async {
+  Future<void> _proceed({required bool skipPasskey}) async {
     // The app-wide messenger outlives this screen, which the router
     // replaces with home once signed in, so it's captured up front.
     final messenger = ScaffoldMessenger.of(context);
-    final notifier = ref.read(appStateProvider.notifier);
+    final notifier = ref.read(backendProvider.notifier);
     final result = await runAction(
-        () => notifier.signUp(widget.draft, registerPasskey: addPasskey));
+        () => notifier.signUp(widget.draft.copyWith(skipPasskey:skipPasskey)));
     // Failure: shown on this screen via actionError.
     final signUp = result.valueOrNull;
     if (signUp == null) return;
@@ -43,14 +43,14 @@ class _BiometricPromptScreenState extends ConsumerState<BiometricPromptScreen>
         'No passkey was added: ${signUp.passkeyError}',
     ];
     if (problems.isNotEmpty) {
-      messenger.showSnackBar(SnackBar(
-          content: Text("You're signed up. ${problems.join(' ')}")));
+      messenger.showSnackBar(
+          SnackBar(content: Text("You're signed up. ${problems.join(' ')}")));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final available = ref.watch(passkeysAvailableProvider);
+    final available = ref.watch(apiFeaturesProvider).passkeys;
     return Scaffold(
       backgroundColor: AppColors.page,
       body: Stack(
@@ -97,19 +97,22 @@ class _BiometricPromptScreenState extends ConsumerState<BiometricPromptScreen>
                     PrimaryButton(
                         label: 'Enable',
                         loading: actionRunning,
-                        onPressed:
-                            actionRunning ? null : () => _proceed(addPasskey: true)),
+                        onPressed: actionRunning
+                            ? null
+                            : () => _proceed(skipPasskey: false)),
                     const SizedBox(height: 10),
                     SecondaryButton(
                         label: 'Maybe later',
-                        onPressed:
-                            actionRunning ? null : () => _proceed(addPasskey: false)),
+                        onPressed: actionRunning
+                            ? null
+                            : () => _proceed(skipPasskey: true)),
                   ] else
                     PrimaryButton(
                         label: 'Continue',
                         loading: actionRunning,
-                        onPressed:
-                            actionRunning ? null : () => _proceed(addPasskey: false)),
+                        onPressed: actionRunning
+                            ? null
+                            : () => _proceed(skipPasskey: true)),
                   const SizedBox(height: 16),
                 ],
               ),

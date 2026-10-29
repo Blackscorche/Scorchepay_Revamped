@@ -41,7 +41,7 @@ catalog, so more countries are a backend change.
 ### Over the limit
 
 When an order is over the user's tier limits, the backend refuses it with
-`overLimit`. The app then shows "Verify to continue" (Mono myPass). After
+`overLimit`. The app then shows "Verify to continue" (Mono Prove: the provider's page opens in an in-app browser, then the app polls until the result arrives). After
 verifying, the user's tier is raised and the same order is retried.
 
 ## API contract
@@ -84,6 +84,42 @@ Error codes: `overLimit`, `invalidTarget`, `customerNotFound`,
 
 Amounts: fiat amounts are whole naira, and Bitcoin amounts are sats.
 
+## Choosing the backend
+
+`VtuApi` is the whole backend as the app sees it: accounts, KYC and bills.
+`backendProvider` sits on top for account flows (the signed-in user,
+waiting for KYC) and holds no mock logic.
+
+| Build | Backend |
+| --- | --- |
+| no `API_BASE_URL` | `MockVtuApi`, on the device (below) |
+| `--dart-define=API_BASE_URL=https://api.scorche.localhost` | `HttpVtuApi`, the real server |
+
+Against the real server:
+
+- **Session:** `sessionTokenProvider` holds the token (in secure storage).
+  `vtuApiProvider` follows it, `backendProvider` loads the signed-in user
+  through it (and holds the account actions: login, sign-up, logout,
+  profile, KYC), and app state is built from `backendProvider`. A
+  `401 signedOut` clears the token, which signs the app out.
+- **Errors:** every failure is `{"error": {"code", "message"}}`. Account
+  calls throw `AuthException(message)`, bills throw `VtuException(code,
+  message)`, and an unreachable server is always `VtuErrorCode.network`.
+- **Paying:** the server holds the payment until the bill is delivered, so
+  after the wallet answers (success, failure or timeout) the order screen
+  reloads the order and goes by its status. A wallet error only shows if the
+  order is still unpaid.
+- **Debug:** a blank username logs in as `ada_lovelace` (PIN `1234`), the
+  sign-up code is `123456`, and "Simulate payment" calls
+  `POST /v1/dev/orders/{id}/simulate-payment` (servers with
+  `DEV_SIMULATE_PAYMENTS=true`). The scenario menu is mock-only; use the
+  server's test inputs instead (a target ending `9999` fails the bill, one
+  ending `0000` has no customer).
+- **Not on the server yet:** passkeys (off in `features`).
+- **Wallets:** invoices are for the signet test network (`lntbs…`), so pay
+  with a signet NWC wallet or "Simulate payment". Mock wallets
+  (`MOCK_WALLETS`) only pay the mock backend's invoices.
+
 ## Mock backend
 
 `MockVtuApi` implements the contract on the device, with a Nigerian catalog.
@@ -106,8 +142,10 @@ Things to try:
 - **Customer not found:** use a meter or smartcard number ending in `0000`.
 - **Debug menu** (tap "Mock: …" next to "VTU & Bills", debug builds only):
   - Success
-  - Bill fails: the order becomes refundable. "Use a test invoice" fills in
-    a valid refund invoice.
+  - Bill fails: the payment goes back by itself and the order reads
+    `refunded`, like the real server.
+  - Bill needs review: the order becomes `refundable`. "Use a test invoice"
+    fills in a valid refund invoice.
   - Quote expires fast: quotes last 20 seconds.
   - Server down
 - **Simulate payment (debug):** on an unpaid order, this settles the invoice
