@@ -10,4 +10,8 @@ class AppEnvVars {
   /// Passkey relying-party ID (a domain). On web it defaults to the page's
   /// host; elsewhere passkeys stay off without it.
   static const passkeyRpId = 'PASSKEY_RP_ID';
+
+  /// The backend's base URL, e.g. `https://api.scorche.localhost`. Unset,
+  /// the app runs the mock backend on the device.
+  static const apiBaseUrl = 'API_BASE_URL';
 }

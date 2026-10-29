@@ -12,6 +12,7 @@ import '../../core/widgets/section_title.dart';
 import '../../core/widgets/status_badge.dart';
 import '../../state/models/vtu.dart';
 import '../../state/providers/vtu_providers.dart';
+import '../../state/providers/api_providers.dart';
 import '../../state/providers/wallets_provider.dart';
 import '../../state/services/mock_vtu_api.dart';
 import '../../theme/app_text_styles.dart';
@@ -30,14 +31,17 @@ class VtuSection extends ConsumerWidget {
     final wallets = ref.watch(walletsProvider);
     final hasWallet = wallets.valueOrNull?.isEmpty == false;
     final scenario = ref.watch(mockScenarioProvider);
+    // Debug builds on the mock backend only.
+    final showScenarios =
+        kDebugMode && ref.watch(vtuApiProvider).features.mockScenarios;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SectionTitle(
           'VTU & Bills',
-          action: kDebugMode ? 'Mock: ${scenario.label}' : null,
-          onAction: kDebugMode ? () => _showScenarioPicker(context) : null,
+          action: showScenarios ? 'Mock: ${scenario.label}' : null,
+          onAction: showScenarios ? () => _showScenarioPicker(context) : null,
         ),
         AppCard(
           padding: const EdgeInsets.all(16),

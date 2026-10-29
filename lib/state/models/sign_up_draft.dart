@@ -12,6 +12,7 @@ class SignUpDraft {
     this.pin,
     this.username,
     this.photo,
+    this.skipPasskey = false,
   });
 
   final String displayName;
@@ -33,6 +34,10 @@ class SignUpDraft {
   /// exists. The backend works out the image type.
   final Uint8List? photo;
 
+  /// The user chose not to add a passkey at sign-up. Otherwise one is
+  /// added when [ApiFeatures.passkeys] is on.
+  final bool skipPasskey;
+
   SignUpDraft copyWith({
     String? displayName,
     String? verificationId,
@@ -41,6 +46,7 @@ class SignUpDraft {
     String? username,
     Uint8List? photo,
     bool clearPhoto = false,
+    bool? skipPasskey,
   }) =>
       SignUpDraft(
         displayName: displayName ?? this.displayName,
@@ -50,5 +56,6 @@ class SignUpDraft {
         pin: pin ?? this.pin,
         username: username ?? this.username,
         photo: clearPhoto ? null : (photo ?? this.photo),
+        skipPasskey: skipPasskey ?? this.skipPasskey,
       );
 }

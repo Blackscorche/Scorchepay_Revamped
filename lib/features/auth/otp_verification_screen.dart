@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/scorch_mascot.dart';
@@ -9,6 +10,7 @@ import '../../core/widgets/buttons.dart';
 import '../../core/widgets/decorative_rings.dart';
 import '../../core/widgets/otp_boxes.dart';
 import '../../state/models/sign_up_draft.dart';
+import '../../state/providers/api_providers.dart';
 import '../../state/services/backend_service.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
@@ -65,7 +67,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen>
 
   Future<void> _verify() async {
     final result = await runAction(() => ref
-        .read(backendServiceProvider)
+        .read(backendProvider.notifier)
         .verifySignUpCode(_draft.verificationId, _code));
     if (!mounted || !result.hasValue) return;
     Navigator.of(context).push(
@@ -77,7 +79,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen>
 
   Future<void> _resend() async {
     final result = await runAction(() =>
-        ref.read(backendServiceProvider).requestSignUpCode(_draft.contact));
+        ref.read(backendProvider.notifier).requestSignUpCode(_draft.contact));
     if (!mounted || !result.hasValue) return;
     _draft = _draft.copyWith(verificationId: result.requireValue);
     _startTimer();
@@ -108,8 +110,11 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen>
                   Text('Verify your number', style: AppText.pageTitle),
                   const SizedBox(height: 8),
                   Text(
-                    'Enter the 6-digit code we sent to ${_draft.contact}. '
-                    'Demo code: ${BackendService.demoOtp}.',
+                    'Enter the 6-digit code we sent to ${_draft.contact}.'
+                    '${switch (kDebugMode ? ref.watch(apiFeaturesProvider).debugSignUpCode : null) {
+                      final code? => ' Debug code: $code.',
+                      null => '',
+                    }}',
                     style: AppText.bodyMuted,
                   ),
                   const SizedBox(height: 32),

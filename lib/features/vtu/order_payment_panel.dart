@@ -9,8 +9,8 @@ import '../../core/widgets/app_card.dart';
 import '../../state/models/connected_wallet.dart';
 import '../../state/models/vtu.dart';
 import '../../state/providers/vtu_providers.dart';
+import '../../state/providers/api_providers.dart';
 import '../../state/providers/wallets_provider.dart';
-import '../../state/services/mock_vtu_api.dart';
 import '../../state/services/wallet_service.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
@@ -123,19 +123,38 @@ mixin OrderPaymentActions<T extends ConsumerStatefulWidget>
         .payInvoice(uri, order.invoice, timeout: order.timeLeft()));
     if (!mounted) return;
     ref.invalidate(walletBalanceProvider(wallet.id));
+    _refreshOrder(order.id);
+    if (!result.hasError) return;
+
+    // The backend holds the payment until the bill is delivered, so the
+    // wallet only answers once it's settled, and a bill that couldn't be
+    // delivered comes back as a failed payment. The order is the truth:
+    // the wallet's error only stands if the order is still unpaid. A
+    // timeout isn't a failure either: the wallet may still be paying.
     final error = result.error;
-    // A timeout isn't a failure: the wallet may still be paying, and the
-    // order's status will say.
     final timedOut =
         error is WalletException && error.code == WalletErrorCode.timeout;
-    if (timedOut) clearActionError();
-    if (result.hasValue || timedOut) _refreshOrder(order.id);
+    final stillUnpaid = timedOut ? false : await _stillUnpaid(order.id);
+    if (mounted && !stillUnpaid) clearActionError();
   }
 
-  /// Debug, mock backend only: settles the invoice without a wallet, for
-  /// real wallets that can't pay a mock invoice.
-  Future<void> simulatePayment(VtuOrder order, MockVtuApi api) async {
-    final result = await runAction(() => api.simulatePayment(order.id));
+  /// Whether [orderId] is still awaiting payment, per the backend. Unknown
+  /// (e.g. offline) counts as unpaid, so the wallet's error stays shown.
+  Future<bool> _stillUnpaid(String orderId) async {
+    try {
+      final order = await ref.read(vtuApiProvider).getOrder(orderId);
+      return order.status == OrderStatus.awaitingPayment;
+    } catch (_) {
+      return true;
+    }
+  }
+
+  /// Debug ([ApiFeatures.simulatePayments]): settles the invoice without
+  /// a wallet, e.g. when no wallet can pay the backend's test-network
+  /// invoices.
+  Future<void> simulatePayment(VtuOrder order) async {
+    final result = await runAction(
+        () => ref.read(vtuApiProvider).simulatePayment(order.id));
     if (mounted && result.hasValue) _refreshOrder(order.id);
   }
 

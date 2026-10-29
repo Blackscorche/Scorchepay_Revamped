@@ -4,7 +4,7 @@ enum KycStatus {
   /// No verification started. Every account starts here, at tier 0.
   unverified,
 
-  /// Verification started with the provider (Mono myPass); waiting on
+  /// Verification started with the provider (Mono Prove); waiting on
   /// its result.
   pending,
 

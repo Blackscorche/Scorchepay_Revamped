@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import '../../state/services/backend_service.dart';
+import '../../state/providers/api_providers.dart';
 import '../../core/widgets/scorch_mascot.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/app_icons.dart';
@@ -12,6 +12,7 @@ import '../../core/widgets/photo_picker_sheet.dart';
 import '../../state/models/sign_up_draft.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
+import '../../state/services/backend_service.dart';
 import 'biometric_prompt_screen.dart';
 
 /// Profile step of sign-up — picture, name and username, after the
@@ -62,19 +63,33 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen>
         : uname;
     // A failure here is about the username, so it shows under that field.
     final result = await runAction(
-        () => ref.read(backendServiceProvider).checkUsernameAvailable(uname));
+        () => ref.read(backendProvider.notifier).checkUsernameAvailable(uname));
     if (!mounted || !result.hasValue) return;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => BiometricPromptScreen(
-            draft: widget.draft.copyWith(
-                username: uname,
-                displayName: name,
-                photo: _photo,
-                clearPhoto: _photo == null))));
+    final photo = ref.read(profilePhotosAvailableProvider) ? _photo : null;
+    final draft = widget.draft.copyWith(
+        username: uname,
+        displayName: name,
+        photo: photo,
+        clearPhoto: photo == null);
+    if (ref.read(apiFeaturesProvider).passkeys) {
+      // Offers a passkey, then signs up.
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => BiometricPromptScreen(draft: draft)));
+      return;
+    }
+    // No passkeys: sign up straight away. The router moves on to home.
+    final messenger = ScaffoldMessenger.of(context);
+    final signUp = await runAction(
+        () => ref.read(backendProvider.notifier).signUp(draft));
+    if (signUp.valueOrNull?.photoError case final error?) {
+      messenger.showSnackBar(SnackBar(
+          content: Text("You're signed up. Your photo wasn't saved: $error")));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final photosAvailable = ref.watch(profilePhotosAvailableProvider);
     return Scaffold(
       backgroundColor: AppColors.page,
       body: Stack(
@@ -97,60 +112,65 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen>
                   Text('Set up your profile', style: AppText.pageTitle),
                   const SizedBox(height: 8),
                   Text(
-                      'Add a photo from your device and pick a username people will recognize.',
+                      photosAvailable
+                          ? 'Add a photo from your device and pick a username people will recognize.'
+                          : 'Pick a username people will recognize.',
                       style: AppText.bodyMuted),
                   const SizedBox(height: 32),
-                  Center(
-                    child: GestureDetector(
-                      onTap: _pickPhoto,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            width: 104,
-                            height: 104,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: _photo == null
-                                  ? null
-                                  : AppColors.accentGradient,
-                              color: _photo == null ? AppColors.surface2 : null,
-                              border: Border.all(
-                                  color: AppColors.borderStrong, width: 2),
-                              image: _photo == null
-                                  ? null
-                                  : DecorationImage(
-                                      image: MemoryImage(_photo!),
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                            alignment: Alignment.center,
-                            child: _photo == null
-                                ? Icon(AppIcons.user,
-                                    size: 40, color: AppColors.muted)
-                                : null,
-                          ),
-                          Positioned(
-                            right: -2,
-                            bottom: -2,
-                            child: Container(
-                              width: 34,
-                              height: 34,
+                  if (photosAvailable) ...[
+                    Center(
+                      child: GestureDetector(
+                        onTap: _pickPhoto,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 104,
+                              height: 104,
                               decoration: BoxDecoration(
-                                color: AppColors.accent,
                                 shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: AppColors.page, width: 3),
+                                gradient: _photo == null
+                                    ? null
+                                    : AppColors.accentGradient,
+                                color:
+                                    _photo == null ? AppColors.surface2 : null,
+                                border: Border.all(
+                                    color: AppColors.borderStrong, width: 2),
+                                image: _photo == null
+                                    ? null
+                                    : DecorationImage(
+                                        image: MemoryImage(_photo!),
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
-                              child: const Icon(AppIcons.camera,
-                                  size: 15, color: Colors.white),
+                              alignment: Alignment.center,
+                              child: _photo == null
+                                  ? Icon(AppIcons.user,
+                                      size: 40, color: AppColors.muted)
+                                  : null,
                             ),
-                          ),
-                        ],
+                            Positioned(
+                              right: -2,
+                              bottom: -2,
+                              child: Container(
+                                width: 34,
+                                height: 34,
+                                decoration: BoxDecoration(
+                                  color: AppColors.accent,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: AppColors.page, width: 3),
+                                ),
+                                child: const Icon(AppIcons.camera,
+                                    size: 15, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
+                    const SizedBox(height: 32),
+                  ],
                   TextField(
                     controller: _nameController,
                     onChanged: (_) => setState(() {}),

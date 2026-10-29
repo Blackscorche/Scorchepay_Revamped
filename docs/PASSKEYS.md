@@ -6,11 +6,20 @@ JSON to the OS and back.
 
 ## Turning it on
 
-On mobile and macOS, passkeys stay hidden until a relying party domain is set:
+Passkeys are an experiment. They show only when the backend supports them
+(`VtuApi.features.passkeys`) on a supported platform:
+
+- **Real backend** (`API_BASE_URL` set): not yet. It has no passkey
+  endpoints, so `HttpVtuApi` reports them off and its passkey methods throw
+  `UnimplementedError`.
+- **Mock backend**: when a relying party domain is set (mobile and macOS;
+  web uses the page's host):
 
 ```sh
 flutter run --dart-define=PASSKEY_RP_ID=your-domain.com
 ```
+
+With passkeys off, sign-up skips the "Enable biometric login" step.
 
 `your-domain.com` must serve the association files below over HTTPS, with no
 redirects and `Content-Type: application/json`.

@@ -1,43 +1,32 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:passkeys/authenticator.dart';
-import 'package:passkeys/types.dart'
-    show AuthenticateRequestType, RegisterRequestType;
 import 'package:uuid/uuid.dart';
 
-import '../services/backend_service.dart';
 import '../models/app_notification.dart';
 import '../models/automation.dart';
 import '../models/escrow.dart';
 import '../models/ledger_entry.dart';
 import '../models/savings.dart';
-import '../models/sign_up_draft.dart';
 import '../services/automation_service.dart';
+import '../services/backend_service.dart';
 import '../services/escrow_service.dart';
 import '../services/fx_rate_service.dart';
 import '../services/ledger_service.dart';
 import '../services/local_store.dart';
-import '../services/passkey_service.dart';
-import '../services/secure_storage_keys.dart';
 import '../services/savings_service.dart';
 import '../services/simulated_providers.dart';
 import '../services/smart_pay_engine.dart';
 import 'app_state.dart';
 
-final secureStorageProvider = Provider<FlutterSecureStorage>(
-  // useDataProtectionKeyChain can be used with MacOsOptions for testing
-  (ref) => const FlutterSecureStorage(),
-);
-
-/// The app's one state notifier: the session (restored on startup, then
-/// [login] / [logout]) plus every user-facing action on app state.
+/// The app's one state notifier: the signed-in user from the backend
+/// ([backendProvider], which also handles signing in and out) combined
+/// with the device's local data, plus every user-facing action on that
+/// local data.
 ///
-/// [build] restores the stored session, so this is loading until that's
-/// done; ScorchePayApp shows the splash until then. Everything else reads
-/// it through `requireValue`.
+/// [build] waits for the backend's session, so this is loading until
+/// that's done; ScorchePayApp shows the splash until then. Everything else
+/// reads it through `requireValue`.
 final appStateProvider =
     AsyncNotifierProvider<AppStateNotifier, AppState>(AppStateNotifier.new);
 
@@ -49,18 +38,10 @@ const _uuid = Uuid();
 /// persists the device-local slice to disk. Backend data — identity and
 /// the token — is never written to [LocalStore].
 class AppStateNotifier extends AsyncNotifier<AppState> {
-
-  BackendService get _backend => ref.read(backendServiceProvider);
-  PasskeyAuthenticator get _passkeys => ref.read(passkeyAuthenticatorProvider);
-  FlutterSecureStorage get _secure => ref.read(secureStorageProvider);
   LocalStore get _store => ref.read(localStoreProvider);
 
   /// The current state. Actions only run once [build] has completed.
   AppState get _appState => state.requireValue;
-
-  // ---------------------------------------------------------------------
-  // Session
-  // ---------------------------------------------------------------------
 
   @override
   Future<AppState> build() async {
@@ -68,25 +49,29 @@ class AppStateNotifier extends AsyncNotifier<AppState> {
     // previous value on a reload), and ScorchePayApp shows the error and
     // decides whether to recover via [continueSignedOut].
     final local = await _store.load();
-    final token = await _secure.read(key: SecureStorageKeys.authToken);
-    if (token == null) return AppState.signedOut(local);
+    final session = await ref.watch(backendProvider.future);
+    if (session == null) return AppState.signedOut(local);
 
-    try {
-      final restored = await _backend.getUser(token, local);
-      if (restored.localState != local) {
-        // Persist parts of the state (like username) gotten from the backend but used on the client.
-        await _store.save(restored.localState);
-      }
-
-      // Run after refreshing state
-      unawaited(Future(_refreshFxRates));
-      return restored;
-    } on AuthException {
-      // Token rejected: forget it. Any other error (e.g. offline) keeps
-      // the token, so the next launch or reload can try again.
-      await _deleteToken();
-      rethrow;
+    final user = session.user;
+    final localState = local.username == user.username
+        ? local
+        : local.cloneWith(username: user.username);
+    if (localState != local) {
+      // Persist parts of the state (like username) gotten from the backend
+      // but used on the client.
+      await _store.save(localState);
     }
+
+    // Run after refreshing state
+    unawaited(Future(_refreshFxRates));
+    return AppState(
+      token: session.token,
+      userId: user.id,
+      displayName: user.displayName,
+      kyc: user.kyc,
+      photoUrl: user.photoUrl,
+      localState: localState,
+    );
   }
 
   /// Recovers from a failed [build] by continuing signed out on the
@@ -94,152 +79,6 @@ class AppStateNotifier extends AsyncNotifier<AppState> {
   /// after it has shown the error.
   Future<void> continueSignedOut() async {
     state = AsyncData(AppState.signedOut(await _store.load()));
-  }
-
-  Future<void> _reload() async {
-    ref.invalidateSelf();
-    await future;
-  }
-
-  Future<void> login(String username, String pin) async {
-    final token =
-        await _backend.login(username, pin); // bad PIN still throws here
-    await _startSession(token);
-  }
-
-  /// Logs in with a passkey on this device (the OS shows the biometric
-  /// prompt and lets the user pick one if there are several).
-  Future<void> loginWithPasskey() async {
-    final options = await _backend.startPasskeyLogin();
-    final assertion = await passkeyCall(() => _passkeys.authenticate(
-        AuthenticateRequestType.fromJsonString(options,
-            preferImmediatelyAvailableCredentials: false)));
-    final token = await _backend.finishPasskeyLogin(assertion.toJsonString());
-    await _startSession(token);
-  }
-
-  /// Adds a passkey on this device to the signed-in account.
-  Future<void> registerPasskey() async {
-    await _registerPasskey(_appState.requireToken);
-  }
-
-  Future<void> _registerPasskey(String sessionToken) async {
-    final options = await _backend.startPasskeyRegistration(sessionToken);
-    final credential = await passkeyCall(
-        () => _passkeys.register(RegisterRequestType.fromJsonString(options)));
-    await _backend.finishPasskeyRegistration(
-        sessionToken, credential.toJsonString());
-  }
-
-  /// Creates the account from a completed [draft] and signs in to it.
-  /// The router then leaves the sign-up flow for home.
-  ///
-  /// With [registerPasskey], also adds a passkey (the OS shows the
-  /// biometric prompt) before signing in, while the sign-up screen is still
-  /// up. That step, and uploading [SignUpDraft.photo], can fail without
-  /// failing sign-up: the result says what didn't work.
-  Future<SignUpResult> signUp(SignUpDraft draft,
-      {bool registerPasskey = false}) async {
-    final signUpToken = draft.signUpToken;
-    final pin = draft.pin;
-    final username = draft.username;
-    if (signUpToken == null || pin == null || username == null) {
-      throw StateError('Sign-up is missing a step.');
-    }
-    // Validation and conflicts (e.g. a taken username) throw here.
-    final token = await _backend.signUp(
-        signUpToken: signUpToken,
-        displayName: draft.displayName,
-        username: username,
-        pin: pin);
-
-    // Optional extras need a session, so they run now, while the sign-up
-    // screen is still up. Neither failing fails sign-up.
-    String? photoError;
-    final photo = draft.photo;
-    if (photo != null) {
-      try {
-        await _backend.uploadProfilePhoto(token, photo);
-      } catch (error) {
-        photoError = error.toString();
-      }
-    }
-
-    String? passkeyError;
-    if (registerPasskey) {
-      try {
-        await _registerPasskey(token);
-      } catch (error) {
-        passkeyError = error.toString();
-      }
-    }
-
-    try {
-      await _startSession(token);
-    } on AuthException {
-      // The account exists now, so retrying sign-up would only hit
-      // "username taken". Point them at login instead.
-      throw const AuthException(
-          "Your account was created, but we couldn't sign you in. Please log in.");
-    }
-    return SignUpResult(photoError: photoError, passkeyError: passkeyError);
-  }
-
-  /// Sets the signed-in user's profile photo, or removes it if [photo] is
-  /// null.
-  Future<void> setProfilePhoto(Uint8List? photo) async {
-    final token = _appState.token;
-    if (token == null) throw StateError('Not signed in.');
-    if (photo == null) {
-      await _backend.deleteProfilePhoto(token);
-    } else {
-      await _backend.uploadProfilePhoto(token, photo);
-    }
-    await _reload();
-  }
-
-  /// Stores [token] and loads the signed-in state for it.
-  Future<void> _startSession(String token) async {
-    await _secure.write(key: SecureStorageKeys.authToken, value: token);
-    try {
-      await _reload(); // throws if build() fails
-    } on AuthException {
-      rethrow; // build() already deleted the rejected token
-    } catch (_) {
-      // The user sees a failed login, so don't keep the token around to
-      // sign them in silently on the next launch.
-      await _deleteToken();
-      throw const AuthException("Couldn't reach the server. Please try again.");
-    }
-  }
-
-  Future<void> logout() async {
-    await _deleteToken();
-    // Not _reload(): signing out needs no backend, and a failed build()
-    // here would leave the old signed-in value in place.
-    await continueSignedOut();
-  }
-
-  Future<void> updateUserDetails(
-      {String? username, String? displayName}) async {
-    final token = _appState.token;
-    if (token == null) throw StateError('Not signed in.');
-    await _backend.updateUserDetails(token,
-        username: username, displayName: displayName);
-    await _reload();
-  }
-
-  /// Verifies the user's identity to raise their KYC tier (and limits),
-  /// then reloads the session so the new tier shows everywhere.
-  Future<void> verifyIdentity() async {
-    await _backend.verifyIdentity(_appState.requireToken);
-    await _reload();
-  }
-
-  Future<void> _deleteToken() async {
-    try {
-      await _secure.delete(key: SecureStorageKeys.authToken);
-    } catch (_) {}
   }
 
   /// Pulls live NGN-pivot FX rates (§5 of the spec — real rates, not a
@@ -778,13 +617,4 @@ class AppStateNotifier extends AsyncNotifier<AppState> {
     }
     await _commit();
   }
-}
-
-/// What didn't work during [AppStateNotifier.signUp], beyond creating the
-/// account (which throws instead). Each is a user-facing message, or null.
-class SignUpResult {
-  const SignUpResult({this.photoError, this.passkeyError});
-
-  final String? photoError;
-  final String? passkeyError;
 }

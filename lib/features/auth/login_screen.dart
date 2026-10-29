@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../state/providers/app_state_notifier.dart';
+import '../../state/providers/api_providers.dart';
 import '../../state/services/backend_service.dart';
-import '../../state/services/passkey_service.dart';
 import '../../core/widgets/scorch_mascot.dart';
 import '../../app_routes.dart';
 import '../../core/app_icons.dart';
@@ -51,16 +52,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   // On success the router navigates on once the session is signed in;
   // failures show via actionError.
   Future<void> _login() async {
-    final result = await runAction(() => ref
-        .read(appStateProvider.notifier)
-        .login(_contactController.text, _pin));
+    final typed = _contactController.text.trim();
+    // Debug builds: a blank username logs in as the backend's demo
+    // account. The backend always needs a username, so this never reaches
+    // it blank.
+    final demo = ref.read(apiFeaturesProvider).debugLogin;
+    final username =
+        kDebugMode && typed.isEmpty && demo != null ? demo.username : typed;
+    final result = await runAction(
+        () => ref.read(backendProvider.notifier).login(username, _pin));
     if (mounted && result.hasError) setState(() => _pin = '');
   }
 
   Future<void> _loginWithPasskey() async {
     setState(() => _pin = '');
     await runAction(
-        () => ref.read(appStateProvider.notifier).loginWithPasskey());
+        () => ref.read(backendProvider.notifier).loginWithPasskey());
   }
 
   /// Back to Welcome (e.g. to create a new account). Login is nested
@@ -89,7 +96,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    final passkeysAvailable = ref.watch(passkeysAvailableProvider);
+    final passkeysAvailable = ref.watch(apiFeaturesProvider).passkeys;
+    final demoLogin = ref.watch(apiFeaturesProvider).debugLogin;
     return Scaffold(
       backgroundColor: AppColors.page,
       body: Stack(
@@ -115,8 +123,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                       Text('Welcome back', style: AppText.pageTitle),
                       const SizedBox(height: 8),
                       Text(
-                          'Demo account: username "${BackendService.demoUsername}" '
-                          '(or leave it blank), PIN ${BackendService.demoPin}.',
+                          switch (kDebugMode ? demoLogin : null) {
+                            final demo? =>
+                              'Debug: leave the username blank to log in as '
+                                  '"${demo.username}" (PIN ${demo.pin}).',
+                            null => 'Log in with your username and PIN.',
+                          },
                           style: AppText.bodyMuted),
                       const SizedBox(height: 24),
                       TextField(
@@ -136,7 +148,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                         children: [
                           if (passkeysAvailable)
                             TextButton.icon(
-                              onPressed: actionRunning ? null : _loginWithPasskey,
+                              onPressed:
+                                  actionRunning ? null : _loginWithPasskey,
                               icon: Icon(AppIcons.fingerprint,
                                   size: 18, color: AppColors.accent),
                               label: Text(

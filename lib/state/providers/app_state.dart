@@ -41,7 +41,7 @@ class AppState {
   final KycInfo kyc;
 
   /// Where the backend serves the profile photo; null if there isn't one.
-  /// Load it with `BackendService.loadProfilePhoto` (see
+  /// Load it with `VtuApi.loadPhoto` (see
   /// `profilePhotoProvider`).
   final String? photoUrl;
   LocalAppState localState;

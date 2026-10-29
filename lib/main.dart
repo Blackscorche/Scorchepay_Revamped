@@ -5,7 +5,7 @@ import 'features/onboarding/splash_screen.dart';
 import 'state/providers/accent_color_provider.dart';
 import 'state/providers/app_state_notifier.dart';
 import 'state/providers/theme_mode_provider.dart';
-import 'state/services/backend_service.dart';
+import 'state/services/vtu_api.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 
